@@ -644,6 +644,23 @@
 
 /* ---------- 响应式适配 ---------- */
 @media (max-width: 768px) {
+    /* 移动端侧边栏展开时的遮罩 */
+        .md-nav--primary {
+            background: var(--gdufe-surface);
+            z-index: 100;
+        }
+    
+        /* 移动端隐藏侧边栏多余的标题间距 */
+        .md-nav__title {
+            padding: 0.75rem 0.75rem 0.5rem;
+        }
+    
+        /* 修复移动端目录溢出 */
+        .md-nav--secondary {
+            max-height: 60vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     .mdx-hero {
         padding: 2.5rem 1rem;
     }
