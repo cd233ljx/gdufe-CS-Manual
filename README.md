@@ -1,5 +1,4 @@
 
-
 # **广东财经大学 大学生活指南** 
 
 GDUFE CS Manual（存疑
@@ -65,9 +64,9 @@ GDUFE CS Manual（存疑
 ## 🤝 一起让指南更好！
 
 本指南因**你的参与**而珍贵：  
-✨ 仓库地址 →  [GitHub](https://github.com/utopiacd/gdufe-cs-manual)  
-✨ 发现错误？→ [提交Issue]()  
-✨ 想补充课程笔记/美食推荐？→ [贡献指南](contribute/)  
+✨ 仓库地址 →  [GitHub](https://github.com/cd233ljx/gdufe-CS-Manual)  
+✨ 发现问题？→ [提交Issue](https://github.com/cd233ljx/gdufe-CS-Manual/issues)  
+✨ 想补充课程笔记/美食推荐？→ [贡献指南](contribute/contribute.md)  
 ✨ 有合作建议？→ <utopiacd@student.gdufe.edu.cn>
 
 >  **共建声明**：所有内容由学生自发整理，欢迎理性参考。

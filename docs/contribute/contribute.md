@@ -17,7 +17,7 @@
  *适合：修正错别字、补充小贴士、更新链接*
 
 ###  ✅方式二：提交 Issue
-1. 访问 [Issues 页面](https://github.com/utopiacd/gdufe-cs-manual/issues)  
+1. 访问 [Issues 页面](https://github.com/cd233ljx/gdufe-CS-Manual/issues)  
 2. 点击 **New Issue** → 选择模板：  
    -  `bug-report`：发现错误/失效链接  
    -  `feature-request`：建议新增内容（如“求补充XX课程资源”）  
@@ -66,7 +66,7 @@
 
 ## 💌 致谢
 所有贡献者将出现在：  
-✨ [项目首页贡献者墙](index.md#-一起让指南更好)  
+✨ [项目首页贡献者墙](../index.md#-一起让指南更好)  
 ✨ GitHub 仓库 [Contributors 列表](https://github.com/utopiacd/gdufe-cs-manual/graphs/contributors)  
 
 
