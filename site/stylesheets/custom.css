@@ -508,7 +508,7 @@
     padding: 0 2px;
 }
 
-/* ---------- 返回顶部按钮 ---------- */
+/* ---------- 返回顶部按钮 ----------
 .md-top {
     background: var(--gdufe-gradient-accent);
     border-radius: 50%;
@@ -519,7 +519,7 @@
 .md-top:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-xl);
-}
+} */
 
 /* ---------- 页脚样式 ---------- */
 .md-footer {

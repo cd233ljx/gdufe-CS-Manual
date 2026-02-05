@@ -3,7 +3,7 @@ site_description: 广东财经大学计算机专业学生共建的实用指南
 site_url: https://cd233ljx.github.io/gdufe-CS-Manual/
 repo_url: https://github.com/cd233ljx/gdufe-CS-Manual
 repo_name: gdufe-CS-Manual
-copyright: Copyright &copy; 2024 GDUFE CS Manual Contributors
+copyright: Copyright &copy; 2026 GDUFE CS Manual Contributors
 
 theme:
   name: material
@@ -40,10 +40,11 @@ theme:
   
   features:
     # 导航功能
+    - navigation.indexes
     - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.expand
+    # - navigation.tabs.sticky
+    # - navigation.sections
+    # - navigation.expand
     - navigation.path
     - navigation.top
     - navigation.footer
@@ -155,21 +156,21 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/cd233ljx/gdufe-CS-Manual
       name: GitHub 仓库
-    - icon: fontawesome/brands/weixin
-      link: https://mp.weixin.qq.com
-      name: 微信公众号
+    # - icon: fontawesome/brands/weixin
+    #   link: https://mp.weixin.qq.com
+    #   name: 微信公众号
   
   analytics:
     provider: google
     property: G-XXXXXXXXXX
   
-  consent:
-    title: Cookie 同意
-    description: >-
-      我们使用 Cookie 来改善您的浏览体验。
-    actions:
-      - accept
-      - manage
+  # consent:
+  #   title: Cookie 同意
+  #   description: >-
+  #     我们使用 Cookie 来改善您的浏览体验。
+  #   actions:
+  #     - accept
+  #     - manage
   
   version:
     provider: mike
