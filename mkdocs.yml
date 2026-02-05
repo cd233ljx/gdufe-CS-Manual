@@ -1,0 +1,41 @@
+site_name: 广东财经大学大学生活指南
+site_description: 广东财经大学计算机专业学生共建的实用指南
+site_url: https://your-repo.github.io/gdufe-cs-manual/
+repo_url: https://github.com/utopiacd/gdufe-cs-manual
+repo_name: GitHub
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.index
+    - search.highlight
+    - search.suggest
+    - content.action.edit
+
+nav:
+  - 指南首页: index.md
+  - 课程资源: courses/index.md
+  - 校园生活:
+      - 美食地图:
+          - 三水校区校内: life/food/in/sanshui.md
+          - 广州校区校内: life/food/in/guangzhou.md
+          - 三水校区校外: life/food/out/sanshui.md
+          - 广州校区校外: life/food/out/guangzhou.md
+      - 通勤指南: life/transport.md
+      - 音游地图: life/sbga.md
+  - FAQ: FaQ/faq.md
+  - 工具箱: tools/tools.md
+  - 贡献指南: contribute/contribute.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - tables
+  - footnotes
+  - md_in_html
