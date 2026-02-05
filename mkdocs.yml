@@ -3,57 +3,173 @@ site_description: 广东财经大学计算机专业学生共建的实用指南
 site_url: https://cd233ljx.github.io/gdufe-CS-Manual/
 repo_url: https://github.com/cd233ljx/gdufe-CS-Manual
 repo_name: gdufe-CS-Manual
+copyright: Copyright &copy; 2024 GDUFE CS Manual Contributors
 
 theme:
   name: material
-
+  language: zh
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+  
   palette:
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: indigo
-      accent: teal
-      toggle:
-        icon: material/weather-sunny
-        name: 切换到浅色模式
-
+    # 浅色模式 - 温暖学术风
     - media: "(prefers-color-scheme: light)"
-      scheme: default 
-      primary: indigo
-      accent: teal
+      scheme: default
+      primary: custom
+      accent: custom
       toggle:
         icon: material/weather-night
         name: 切换到深色模式
+    
+    # 深色模式 - 深邃科技风
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+  
+  font:
+    text: "Noto Sans SC"
+    code: "JetBrains Mono"
+  
   features:
-    - palette-switcher
-    - navigation.tabs       
-    - navigation.sections   
-    - search.suggest        
-    - search.highlight       
+    # 导航功能
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    
+    # 搜索功能
+    - search.suggest
+    - search.highlight
+    - search.share
+    
+    # 内容功能
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+    
+    # 其他功能
+    - header.autohide
+    - announce.dismiss
 
+extra_css:
+  - stylesheets/custom.css
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
 
 nav:
-  - 指南首页: index.md
-  - 课程资源: courses/index.md
+  - 首页: index.md
+  - 课程资源:
+    - 课程总览: courses/c_index.md
+    - 基础课程: courses/basic/b_index.md
+    - 专业核心课: courses/professional/p_index.md
+    - 选修推荐: courses/elective.md
   - 校园生活:
-      - 美食地图:
-          - 三水校区校内: life/food/in/sanshui.md
-          - 广州校区校内: life/food/in/guangzhou.md
-          - 三水校区校外: life/food/out/sanshui.md
-          - 广州校区校外: life/food/out/guangzhou.md
-      - 通勤指南: life/transport.md
-      - 音游地图: life/sbga.md
-  - FAQ: FaQ/faq.md
+    - 美食地图:
+      - 三水校区:
+        - 校内: life/food/sanshui/in/sanshui_in.md
+        - 校外: life/food/sanshui/out/sanshui_out.md
+      - 广州校区:
+        - 校内: life/food/guangzhou/in/gz_in.md
+        - 校外: life/food/guangzhou/out/gz_out.md
+    - 通勤指南: life/transport/transport.md
+    - 音游地图: life/sbga/sbga.md
+    - 宿舍生活: life/dormitory/dormitory.md
   - 工具箱: tools/tools.md
+  - FAQ: FaQ/faq.md
   - 贡献指南: contribute/contribute.md
 
 plugins:
-  - search: 
+  - search:
       lang: zh
+      separator: '[\s\u200b\-]'
+  - minify:
+      minify_html: true
+  - tags
 
 markdown_extensions:
-  - pymdownx.tasklist:
-      custom_checkbox: true
+  # Python Markdown
+  - abbr
   - admonition
-  - tables
+  - attr_list
+  - def_list
   - footnotes
   - md_in_html
+  - toc:
+      permalink: true
+      title: 目录
+  
+  # PyMdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: cd233ljx
+      repo: gdufe-CS-Manual
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/cd233ljx/gdufe-CS-Manual
+      name: GitHub 仓库
+    - icon: fontawesome/brands/weixin
+      link: https://mp.weixin.qq.com
+      name: 微信公众号
+  
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX
+  
+  consent:
+    title: Cookie 同意
+    description: >-
+      我们使用 Cookie 来改善您的浏览体验。
+    actions:
+      - accept
+      - manage
+  
+  version:
+    provider: mike

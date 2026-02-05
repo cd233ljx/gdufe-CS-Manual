@@ -26,11 +26,11 @@ GDUFE CS Manual（存疑
  >暂时按计算机科学与技术专业培养方案    
  >因为站主是(
 
-## [课程索引](courses/index.md) 
+## [总课程索引](courses/c_index.md) 
 
    [高频问题FAQ](FaQ/faq.md)   
 
-   [学习工具箱](tools/)
+   [学习工具箱](tools/tools.md)
 
 ---
 
@@ -40,25 +40,26 @@ GDUFE CS Manual（存疑
 
 ### 三水校区
 
--  [校内食堂](life/food/sanshui/in.md)  
+-  [校内食堂](life/food/sanshui/in/sanshui_in.md)  
 
--  [校外探店指南](life/food/sanshui/out.md)  
+-  [校外探店指南](life/food/sanshui/out/sanshui_out.md)  
 
 ### 广州校区
 
--  [校内食堂](life/food/guangzhou/in.md)  
+-  [校内食堂](life/food/guangzhou/in/gz_in.md)  
 
--  [校外探店指南](life/food/guangzhou/out.md)  
+-  [校外探店指南](life/food/guangzhou/out/gz_out.md)  
 
 
-### [**投稿！**](contribute/)
+### [**投稿！**](contribute/contribute.md)
 
 
 
 ### 其他
-- 🚌 [通勤](transport/) 
--  [音游地图及机厅评价](sbga/) 
-- 待建设
+-  [通勤](life/transport/transport.md) 
+-  [音游地图及机厅评价](life/sbga/sbga.md) 
+-  [宿舍](life/dormitory/dormitory.md)
+-  待建设
 
 ---
 
