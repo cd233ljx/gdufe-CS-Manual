@@ -1,75 +1,151 @@
 
-# **广财大学生活指南** 
+<div class="mdx-hero">
+  <h1>广财大学生活指南 · GDUFE CS Manual</h1>
+  <p>
+    由广东财经大学计算机相关专业学生共建，  
+    帮你从「刚拿到录取通知书」一路走到「熟门熟路的老油条」。
+  </p>
 
-GDUFE CS Manual（存疑
+  <div class="mdx-hero__buttons">
+    <a class="md-button md-button--primary" href="courses/c_index/">
+      📚 先从课程总览开始看
+    </a>
+    <a class="md-button" href="life/food/sanshui/in/sanshui_in/">
+      🍜 了解一下吃喝玩乐
+    </a>
+    <a class="md-button md-button--secondary" href="contribute/contribute/">
+      🤝 我要来补充/纠错
+    </a>
+  </div>
 
-**Inspired By [gdufe-cs-manual](https://xeraphinite.github.io/gdufe-cs-manual/)** （烂尾楼重建计划）
+  <p style="margin-top: 1rem; opacity: .9;">
+    💡 本站仍在建设中，内容会持续更新，欢迎 Star、提 Issue 或直接 PR。
+  </p>
+</div>
 
-> 🌟 本网站正在建设之中，欢迎各位提供资源建议！
+## 📌 这是什么？
 
+你好！这里是 **广东财经大学计算机相关专业学生共建的实用生活 + 学习指南**。  
+你可能是：
 
+- 刚收到录取通知书的萌新  
+- 在课程/选修/规划中纠结的学弟学妹  
+- 想探索校园周边吃喝玩乐的同学  
+- 愿意分享经验、吐槽选课/老师的学长学姐  
 
-## 📖 欢迎新生 & 老友 !
-
-你好！这里是 **广东财经大学计算机相关专业学生共建的实用指南**。  
-无论你是：  
-✅ 刚收到录取通知书的萌新  
-✅ 正在课程规划纠结的学弟学妹  
-✅ 想探索校园周边的吃货  
-✅ 愿意分享经验的学长学姐   [贡献指南](contribute/contribute.md)   
-
->  **使用提示**：左侧导航栏按学期/主题分类，点击即可直达内容。手机端点击右上角菜单图标展开导航。
-
----
-## 📚 **课程资源**-按教务系统课程分类整理（持续补充）
- >暂时按计算机科学与技术专业培养方案    
- >因为站主是(
-
-## [总课程索引](courses/c_index.md) 
-
-   [高频问题FAQ](FaQ/faq.md)   
-
-   [学习工具箱](tools/tools.md)
-
----
-
-## 🍜 校园生活指南（持续补充）
-
-### 🥟 美食地图
-
-### 三水校区
-
--  [校内食堂](life/food/sanshui/in/sanshui_in.md)  
-
--  [校外探店指南](life/food/sanshui/out/sanshui_out.md)  
-
-### 广州校区
-
--  [校内食堂](life/food/guangzhou/in/gz_in.md)  
-
--  [校外探店指南](life/food/guangzhou/out/gz_out.md)  
-
-
-### [**投稿！**](contribute/contribute.md)
-
-
-
-### 其他
--  [通勤](life/transport/transport.md) 
--  [音游地图及机厅评价](life/sbga/sbga.md) 
--  [宿舍](life/dormitory/dormitory.md)
--  待建设
+> **怎么用？**  
+> - 左侧栏按「课程 / 校园生活」分类导航  
+> - 顶部 Tabs 可在主要模块间快速切换  
+> - 手机端点击右上角菜单图标展开导航
 
 ---
 
-## 🤝 一起让指南更好！
+## ⚡ 快速入口
 
-本指南因**你的参与**而珍贵：  
-✨ 仓库地址 →  [GitHub](https://github.com/cd233ljx/gdufe-CS-Manual)  
-✨ 发现问题？→ [提交Issue](https://github.com/cd233ljx/gdufe-CS-Manual/issues)  
-✨ 想补充课程笔记/美食推荐？→ [贡献指南](contribute/contribute.md)  
-✨ 有合作建议？→ <utopiacd@student.gdufe.edu.cn>
+<div class="mdx-grid">
 
->  **共建声明**：所有内容由学生自发整理，欢迎理性参考。
+  <div class="mdx-card">
+    <div class="mdx-card__header">
+      <div class="mdx-card__icon">📚</div>
+      <div class="mdx-card__title">课程资源 · 选课不再瞎蒙</div>
+    </div>
+    <div class="mdx-card__content">
+      按教务系统课程和培养方案整理的课程索引，包含部分经验贴与资料指路，先从这里了解你四年会学什么。
+      <p>
+        <a href="courses/c_index/">➡ 查看总课程索引</a>
+      </p>
+    </div>
+  </div>
 
+  <div class="mdx-card">
+    <div class="mdx-card__header">
+      <div class="mdx-card__icon">🧰</div>
+      <div class="mdx-card__title">学习工具箱 · 提效向</div>
+    </div>
+    <div class="mdx-card__content">
+      常用网站、开发工具、效率插件、常见坑合集，适合在写作业 / 做项目 / 摸鱼前先看一眼。
+      <p>
+        <a href="tools/tools/">➡ 打开学习工具箱</a>
+      </p>
+    </div>
+  </div>
 
+  <div class="mdx-card">
+    <div class="mdx-card__header">
+      <div class="mdx-card__icon">🍜</div>
+      <div class="mdx-card__title">校园生活 · 吃喝住行</div>
+    </div>
+    <div class="mdx-card__content">
+      三水/广州校区的食堂、校外店、通勤路线、宿舍环境等真实体验，帮你少踩一点坑。
+      <p>
+        <a href="#campus-life">➡ 直接跳转到生活指南</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="mdx-card">
+    <div class="mdx-card__header">
+      <div class="mdx-card__icon">❓</div>
+      <div class="mdx-card__title">高频问题 FAQ</div>
+    </div>
+    <div class="mdx-card__content">
+      学分怎么算？转专业/双学位？考试周怎么活？把大家问得最多的问题放在一起。
+      <p>
+        <a href="FaQ/faq/">➡ 先看看常见疑问</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+---
+
+## 📚 课程资源总览
+
+> 当前以 **计算机科学与技术专业** 培养方案为主，其他计算机相关专业后续会逐步补齐。
+
+- [总课程索引](courses/c_index.md)  
+- [基础课程导航](courses/basic/b_index.md)  
+- [专业核心课](courses/professional/p_index.md)  
+- [选修推荐](courses/elective.md)
+
+如果你已经修过某门课，**欢迎补充：推荐教材 / 优秀作业 / 老师风格 / 复习建议等**。
+
+---
+
+## <span id="campus-life">🍜 校园生活指南（持续补充）</span>
+
+#### 🥟 美食地图
+
+#### 三水校区
+
+- [校内食堂](life/food/sanshui/in/sanshui_in.md)  
+- [校外探店指南](life/food/sanshui/out/sanshui_out.md)  
+
+#### 广州校区
+
+- [校内食堂](life/food/guangzhou/in/gz_in.md)  
+- [校外探店指南](life/food/guangzhou/out/gz_out.md)  
+
+#### 其他生活向内容
+
+- [通勤](life/transport/transport.md)  
+- [音游地图及机厅评价](life/sbga/sbga.md)  
+- [宿舍](life/dormitory/dormitory.md)  
+- 以及还在施工中的更多内容……
+
+> 想补充你的私藏路线 / 图书馆自习点 / 选宿舍心得？  
+> 可以直接来一发 👉 [投稿 & 贡献指南](contribute/contribute.md)
+
+---
+
+## 🤝 一起让指南更好
+
+本指南因 **你的参与** 而有意义：
+
+- 仓库地址 → [GitHub](https://github.com/cd233ljx/gdufe-CS-Manual)  
+- 发现错误或有建议 → [提交 Issue](https://github.com/cd233ljx/gdufe-CS-Manual/issues)  
+- 想补充课程笔记 / 生活经验 → [阅读贡献指南](contribute/contribute.md)  
+- 联系维护者 → <utopiacd@student.gdufe.edu.cn>  
+
+> **共建声明**：所有内容由学生自发整理，不代表学校官方观点，请理性参考。
