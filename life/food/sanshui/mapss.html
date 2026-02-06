@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三水校区美食地图 (优化版)</title>
+    <style>
+        /* 全屏显示并美化字体 */
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft YaHei", -apple-system, sans-serif;
+        }
+
+        /* 自定义信息窗体样式 */
+        .info-card {
+            padding: 10px;
+            min-width: 180px;
+        }
+
+        .info-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            margin: 8px 0;
+        }
+
+        .btn-detail {
+            display: inline-block;
+            padding: 6px 15px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+
+        .btn-detail:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script type="text/javascript">
+        // [重要] 高德地图 JS API 2.0 安全密钥配置
+        // 需在加载 API 脚本之前设置
+        window._AMapSecurityConfig = {
+            securityJsCode: b7267db7af9b5b5a66d78ebc6da65e56, // 必填，否则部分功能无法使用
+        };
+    </script>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            if (typeof AMap === 'undefined') {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                // 使用您提供的 Key 并一次性加载所需插件
+                script.src = 'https://webapi.amap.com/maps?v=2.0&key=631b14bbbb5a96764367334776922433&plugin=AMap.Scale,AMap.ToolBar';
+                script.onload = initMap;
+                document.head.appendChild(script);
+            } else {
+                initMap();
+            }
+        };
+
+        function initMap() {
+            // 初始化地图：三水校区坐标
+            var map = new AMap.Map('container', {
+                zoom: 14,
+                center: [112.854394, 23.206756]
+            });
+
+            // 添加地图控件
+            map.addControl(new AMap.Scale());
+            map.addControl(new AMap.ToolBar());
+
+            // 标注数据
+            var shops = [
+                {
+                    name: '荣创木桶饭',
+                    position: [112.848349, 23.205605],
+                    description: '站主指定餐厅',
+                    link: 'out/家常菜/荣创木桶饭/荣创木桶饭'
+                },
+                {
+                    name: '胜记艇仔粥',
+                    position: [112.891298, 23.166644],
+                    description: '艇仔粥9元一碗买不了吃亏买不了上当',
+                    link: 'out/家常菜/胜记艇仔粥/胜记艇仔粥'
+                },
+                {
+                    name: '拾意炖汤',
+                    position: [112.8913, 23.173644],
+                    description: '站主指定餐厅2',
+                    link: 'out/家常菜/拾意炖汤/拾意炖汤'
+                },
+            ];
+
+            // 创建共享的单一信息窗体实例，提高性能
+            var infoWindow = new AMap.InfoWindow({
+                offset: new AMap.Pixel(0, -30)
+            });
+
+            // 循环添加标记
+            shops.forEach(function (shop) {
+                var marker = new AMap.Marker({
+                    position: shop.position,
+                    map: map,
+                    // 添加文本标签，方便用户直接在地图上看到校内/校外的区分
+                    label: {
+                        content: `<div style="color:#1a73e8; font-weight:bold; padding:2px 5px; background:white; border:1px solid #1a73e8; border-radius:3px;">${shop.name}</div>`,
+                        direction: 'bottom'
+                    },
+                    title: shop.name
+                });
+
+                // 绑定点击事件
+                marker.on('click', function () {
+                    var content = `
+                        <div class="info-card">
+                            <h3>${shop.name}</h3>
+                            <p>${shop.description}</p>
+                            ${shop.link ? `<a href="${shop.link}" target="_blank" class="btn-detail">查看详情</a>` : '<span style="color:#999; font-size:12px;">详情整理中...</span>'}
+                        </div>
+                    `;
+                    infoWindow.setContent(content);
+                    infoWindow.open(map, marker.getPosition());
+                });
+            });
+
+            // 关键：自动调整地图视野，确保校内和校外的点都能同时显示在屏幕上
+            map.setFitView();
+        }
+    </script>
+</body>
+
+</html>
