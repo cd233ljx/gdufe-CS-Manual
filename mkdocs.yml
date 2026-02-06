@@ -14,7 +14,7 @@ theme:
     repo: fontawesome/brands/github
     edit: material/pencil
     view: material/eye
-  
+
   palette:
     # 浅色模式 - 温暖学术风
     - media: "(prefers-color-scheme: light)"
@@ -24,7 +24,7 @@ theme:
       toggle:
         icon: material/weather-night
         name: 切换到深色模式
-    
+
     # 深色模式 - 深邃科技风
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
@@ -33,11 +33,11 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: 切换到浅色模式
-  
+
   font:
     text: "Noto Sans SC"
     code: "JetBrains Mono"
-  
+
   features:
     # 导航功能
     - navigation.indexes
@@ -48,12 +48,12 @@ theme:
     - navigation.path
     - navigation.top
     - navigation.footer
-    
+
     # 搜索功能
     - search.suggest
     - search.highlight
     - search.share
-    
+
     # 内容功能
     - content.action.edit
     - content.action.view
@@ -61,7 +61,7 @@ theme:
     - content.code.annotate
     - content.tabs.link
     - content.tooltips
-    
+
     # 其他功能
     - header.autohide
     - announce.dismiss
@@ -76,21 +76,17 @@ extra_javascript:
 nav:
   - 首页: index.md
   - 课程资源:
-    - 课程总览: courses/c_index.md
-    - 基础课程: courses/basic/b_index.md
-    - 专业核心课: courses/professional/p_index.md
-    - 选修推荐: courses/elective.md
+      - 课程总览: courses/c_index.md
+      - 基础课程: courses/basic/b_index.md
+      - 专业核心课: courses/professional/p_index.md
+      - 选修推荐: courses/elective.md
   - 校园生活:
-    - 美食地图:
-      - 三水校区:
-        - 校内: life/food/sanshui/in/sanshui_in.md
-        - 校外: life/food/sanshui/out/sanshui_out.md
-      - 广州校区:
-        - 校内: life/food/guangzhou/in/gz_in.md
-        - 校外: life/food/guangzhou/out/gz_out.md
-    - 通勤指南: life/transport/transport.md
-    - 音游地图: life/sbga/sbga.md
-    - 宿舍生活: life/dormitory/dormitory.md
+      - 美食地图:
+          - 三水校区: life/food/sanshui/map.md
+          - 广州校区: life/food/guangzhou/map.md
+      - 通勤指南: life/transport/transport.md
+      - 舞萌/中二 地图: life/sbga/sbga.md
+      - 宿舍生活: life/dormitory/dormitory.md
   - 工具箱: tools/tools.md
   - FAQ: FaQ/faq.md
   - 贡献指南: contribute/contribute.md
@@ -114,7 +110,7 @@ markdown_extensions:
   - toc:
       permalink: true
       title: 目录
-  
+
   # PyMdown Extensions
   - pymdownx.arithmatex:
       generic: true
@@ -159,11 +155,11 @@ extra:
     # - icon: fontawesome/brands/weixin
     #   link: https://mp.weixin.qq.com
     #   name: 微信公众号
-  
+
   analytics:
     provider: google
     property: G-XXXXXXXXXX
-  
+
   # consent:
   #   title: Cookie 同意
   #   description: >-
@@ -171,7 +167,7 @@ extra:
   #   actions:
   #     - accept
   #     - manage
-  
+
 extra_head:
   - |
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">

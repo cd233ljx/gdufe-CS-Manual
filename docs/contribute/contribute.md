@@ -7,7 +7,7 @@
 
 ---
 
-##  **三种简单的贡献方式**
+##  **三种贡献方式**
 
 ###  ✅方式一：GitHub 网页端编辑
 1. 在网站任意页面点击右上角 `Edit this page`（需登录 GitHub）  
@@ -33,11 +33,11 @@
 - 投稿类型：课程资源 / 美食推荐 / 生活贴士 / 其他
 - 具体内容：（文字+图片链接/描述/附件）
 - 你的称呼：（可选，用于致谢）
-- 联系方式：（可选，方便我们确认细节）
+- 联系方式（手机/微信）：（可选，方便我们确认细节）
 ```
 
 
-##  **贡献内容规范（可选）**
+##  **贡献内容规范**
 
 ### 📚 课程资源投稿
 ```markdown
@@ -66,9 +66,9 @@
 
 ## 💌 致谢
 所有贡献者将出现在：  
-✨ [项目首页贡献者墙](../index.md#-一起让指南更好)  
+✨ [项目首页贡献者墙](../index.md#acknowledgments)  
 ✨ GitHub 仓库 [Contributors 列表](https://github.com/utopiacd/gdufe-cs-manual/graphs/contributors)  
 
 
->最后更新：`2026.2.5`  |  项目维护：[@cd233ljx](https://github.com/cd233ljx)  
+>最后更新：`2026.2.6`|项目维护：[@cd233ljx](https://github.com/cd233ljx)  
 共建咨询：<utopiacd@student.gdufe.edu.cn>

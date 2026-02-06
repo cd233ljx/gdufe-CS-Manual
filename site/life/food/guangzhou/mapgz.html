@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广州校区美食地图 (优化版)</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 信息窗体样式自定义 */
+        .info-card {
+            padding: 10px;
+            min-width: 180px;
+        }
+
+        .info-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .btn-detail {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 12px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script type="text/javascript">
+        // [重要] 高德地图 JS API 2.0 安全密钥配置
+        // 需在加载 API 脚本之前设置，否则可能无法正常加载地图
+        window._AMapSecurityConfig = {
+            securityJsCode: f6b304f68221216d773e53c6ce2b33e9, 
+        };
+    </script>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            if (typeof AMap === 'undefined') {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                // 使用您提供的 Key
+                script.src = 'https://webapi.amap.com/maps?v=2.0&key=7b7d2345e686da8d226081f90ad4a644&plugin=AMap.Scale,AMap.ToolBar';
+                script.onload = initMap;
+                document.head.appendChild(script);
+            } else {
+                initMap();
+            }
+        };
+
+        function initMap() {
+            // 初始化地图
+            var map = new AMap.Map('container', {
+                zoom: 13,
+                center: [113.353897, 23.090329]
+            });
+
+            // 添加控件
+            map.addControl(new AMap.Scale());
+            map.addControl(new AMap.ToolBar());
+
+            // 标记点数据
+            var shops = [
+                {
+                    name: '校内美食',
+                    position: [113.353897, 23.090329],
+                    description: '广州校区校内食堂及小吃',
+                    link: 'in/123'
+                },
+                {
+                    name: '校外美食',
+                    position: [113.365362, 23.151053],
+                    description: '广州校区周边热门店铺',
+                    link: 'out/gz_out.html'
+                }
+            ];
+
+            // 创建一个共享的信息窗体实例
+            var infoWindow = new AMap.InfoWindow({
+                offset: new AMap.Pixel(0, -30)
+            });
+
+            // 遍历数据创建标记
+            shops.forEach(function (shop) {
+                // 创建 Marker 实例
+                var marker = new AMap.Marker({
+                    position: shop.position,
+                    map: map,
+                    // 使用 label 属性显示文字标签，不覆盖默认图标
+                    label: {
+                        content: `<div style="color:#1a73e8; font-weight:bold;">${shop.name}</div>`,
+                        direction: 'bottom' // 标签位置：底部
+                    },
+                    title: shop.name // 鼠标悬停时显示的文字
+                });
+
+                // 设置标记的点击事件
+                marker.on('click', function () {
+                    var content = `
+                        <div class="info-card">
+                            <h3>${shop.name}</h3>
+                            <p>${shop.description}</p>
+                            <a href="${shop.link}" target="_blank" class="btn-detail">查看详情</a>
+                        </div>
+                    `;
+                    infoWindow.setContent(content);
+                    infoWindow.open(map, marker.getPosition());
+                });
+            });
+
+            // 自动调整地图视野，使所有标记点都在可见范围内
+            map.setFitView();
+        }
+    </script>
+</body>
+
+</html>
