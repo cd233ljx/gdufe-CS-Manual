@@ -1,0 +1,4 @@
+Flask==2.0.1
+Flask-CORS==3.0.10
+SQLAlchemy==1.4.27
+pandas==1.3.3

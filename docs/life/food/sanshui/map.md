@@ -6,6 +6,12 @@
 
 <iframe src="../mapss.html" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
 
+## 美食投稿
+
+[**点击这里投稿美食店铺**](../mapss.html)
+
+如果您发现了好的美食店铺，欢迎点击上方链接进行投稿，我们会尽快审核并添加到地图中。
+
 ## 使用说明
 
 - 点击地图上的标记点可查看店铺详细信息
@@ -20,5 +26,3 @@
 
 ### [校外美食](out/sanshui_out.md)  
 三水校区周边特色美食，涵盖粤菜、烧烤、牛杂等多种类型。
-
-

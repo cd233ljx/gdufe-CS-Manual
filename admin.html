@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美食投稿后台管理</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .submission-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .submission-item h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .submission-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .status-approved {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-rejected {
+            background-color: #dc3545;
+            color: white;
+        }
+        .action-buttons {
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .btn-approve {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .refresh-btn {
+            background-color: #17a2b8;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .add-to-map-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>美食投稿后台管理</h1>
+    <div class="container">
+        <button class="btn refresh-btn" onclick="loadSubmissions()">刷新投稿列表</button>
+        <div id="submissions-container">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载时自动加载投稿
+        window.onload = function() {
+            loadSubmissions();
+        };
+
+        // 加载投稿列表
+        function loadSubmissions() {
+            const container = document.getElementById('submissions-container');
+            container.innerHTML = '<div class="loading">加载中...</div>';
+
+            fetch('http://localhost:5000/admin/submissions')
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        renderSubmissions(data);
+                    } else {
+                        container.innerHTML = '<div class="loading">加载失败，请稍后重试</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('加载投稿失败:', error);
+                    container.innerHTML = '<div class="loading">加载失败，请稍后重试</div>';
+                });
+        }
+
+        // 渲染投稿列表
+        function renderSubmissions(submissions) {
+            const container = document.getElementById('submissions-container');
+            
+            if (submissions.length === 0) {
+                container.innerHTML = '<div class="loading">暂无投稿</div>';
+                return;
+            }
+
+            let html = '';
+            submissions.forEach(sub => {
+                html += `
+                    <div class="submission-item">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>${sub.name}</h3>
+                            <span class="status-badge status-${sub.status}">${getStatusText(sub.status)}</span>
+                        </div>
+                        <p><strong>描述:</strong> ${sub.description}</p>
+                        <p><strong>人均:</strong> ${sub.average_price}</p>
+                        <p><strong>链接:</strong> <a href="${sub.link}" target="_blank">${sub.link}</a></p>
+                        <p><strong>校区:</strong> ${sub.campus}</p>
+                        <div class="action-buttons">
+                            ${sub.status === 'pending' ? `
+                                <button class="btn btn-approve" onclick="approveSubmission('${sub.id}')">通过</button>
+                                <button class="btn btn-reject" onclick="rejectSubmission('${sub.id}')">拒绝</button>
+                            ` : ''}
+                            ${sub.status === 'approved' ? `
+                                <button class="btn add-to-map-btn" onclick="addToMap('${sub.id}', '${sub.campus}')">添加到地图</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': '待审核',
+                'approved': '已通过',
+                'rejected': '已拒绝'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 审核通过
+        function approveSubmission(id) {
+            fetch(`http://localhost:5000/admin/approve/${id}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                loadSubmissions();
+            })
+            .catch(error => {
+                console.error('审核失败:', error);
+                alert('审核失败，请稍后重试');
+            });
+        }
+
+        // 拒绝投稿
+        function rejectSubmission(id) {
+            fetch(`http://localhost:5000/admin/reject/${id}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                loadSubmissions();
+            })
+            .catch(error => {
+                console.error('拒绝失败:', error);
+                alert('拒绝失败，请稍后重试');
+            });
+        }
+
+        // 添加到地图
+        function addToMap(id, campus) {
+            // 这里可以实现自动添加到地图的逻辑
+            // 目前我们手动添加，所以显示提示信息
+            alert('请手动将此店铺添加到对应的地图文件中。\n\n广州校区: docs/life/food/guangzhou/mapgz.html\n三水校区: docs/life/food/sanshui/mapss.html');
+        }
+    </script>
+</body>
+</html>

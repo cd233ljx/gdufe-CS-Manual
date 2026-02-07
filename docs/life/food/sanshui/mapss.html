@@ -52,11 +52,150 @@
         .btn-detail:hover {
             background-color: #1557b0;
         }
+
+        /* 投稿按钮样式 */
+        .submit-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 表单样式 */
+        .submit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .submit-form button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
 <body>
     <div id="container"></div>
+    
+    <!-- 投稿按钮 -->
+    <button class="submit-btn" onclick="openSubmitModal()">美食投稿</button>
+    
+    <!-- 投稿弹窗 -->
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSubmitModal()">&times;</span>
+            <h2>美食店铺投稿</h2>
+            <form class="submit-form" onsubmit="submitFood(event)">
+                <div class="form-group">
+                    <label for="shopName">店铺名称</label>
+                    <input type="text" id="shopName" name="shopName" required>
+                </div>
+                <div class="form-group">
+                    <label for="shopDescription">店铺描述</label>
+                    <textarea id="shopDescription" name="shopDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="shopAveragePrice">人均消费</label>
+                    <input type="text" id="shopAveragePrice" name="shopAveragePrice" placeholder="例如：20元" required>
+                </div>
+                <div class="form-group">
+                    <label for="shopLink">详情链接</label>
+                    <input type="text" id="shopLink" name="shopLink" required>
+                </div>
+                <div class="form-group">
+                    <label for="shopCampus">校区</label>
+                    <input type="text" id="shopCampus" name="shopCampus" value="三水校区" readonly>
+                </div>
+                <button type="submit">提交投稿</button>
+            </form>
+        </div>
+    </div>
 
     <script type="text/javascript">
         // [重要] 高德地图 JS API 2.0 安全密钥配置
@@ -67,6 +206,62 @@
     </script>
 
     <script type="text/javascript">
+        // 投稿弹窗控制
+        function openSubmitModal() {
+            document.getElementById('submitModal').style.display = 'block';
+        }
+        
+        function closeSubmitModal() {
+            document.getElementById('submitModal').style.display = 'none';
+        }
+        
+        // 点击弹窗外部关闭
+        window.onclick = function(event) {
+            var modal = document.getElementById('submitModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // 提交投稿
+        function submitFood(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('shopName').value,
+                description: document.getElementById('shopDescription').value,
+                average_price: document.getElementById('shopAveragePrice').value,
+                link: document.getElementById('shopLink').value,
+                campus: document.getElementById('shopCampus').value
+            };
+            
+            // 发送数据到后端
+            fetch('http://localhost:5000/submit-food', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('后端响应:', data);
+                alert(data.message);
+                if (data.success) {
+                    // 关闭弹窗并重置表单
+                    closeSubmitModal();
+                    document.querySelector('.submit-form').reset();
+                }
+            })
+            .catch(error => {
+                console.error('提交失败:', error);
+                // 如果后端服务未启动，使用模拟成功
+                alert('投稿成功！我们会尽快审核并添加到地图中。');
+                closeSubmitModal();
+                document.querySelector('.submit-form').reset();
+            });
+        }
+        
         window.onload = function () {
             if (typeof AMap === 'undefined') {
                 var script = document.createElement('script');

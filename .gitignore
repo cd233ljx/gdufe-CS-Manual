@@ -1,4 +1,6 @@
 # 环境
 venv/
 
+#个人本地文件
 learning.md
+Todo.md
