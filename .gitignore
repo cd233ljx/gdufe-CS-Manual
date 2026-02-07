@@ -1,4 +1,9 @@
 # 环境
 venv/
+.idea/
+.vscode/
 
+#个人本地文件
 learning.md
+Todo.md
+data/
