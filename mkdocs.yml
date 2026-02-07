@@ -152,9 +152,9 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/cd233ljx/gdufe-CS-Manual
       name: GitHub 仓库
-    # - icon: fontawesome/brands/weixin
-    #   link: https://mp.weixin.qq.com
-    #   name: 微信公众号
+    - icon: fontawesome/brands/weixin
+      link: https://youke.xn--y7xa690gmna.cn/s1/2026/02/08/69876395a9865.webp
+      name: 微信（注明来意）
 
   analytics:
     provider: google

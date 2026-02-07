@@ -15,25 +15,40 @@ def clean_filename(filename):
 
 def generate_markdown_file(row, output_dir):
     """根据一行数据生成Markdown文件"""
-    # 获取店铺名称
-    store_name = str(row['店铺名称']).strip()
+    # 获取ID和店铺名称
+    fill_id = str(row['填写ID']).strip() if pd.notna(row['填写ID']) else ""
+    store_name = str(row['店铺名称']).strip() if pd.notna(row['店铺名称']) else ""
+
+    # 检查ID和店铺名称是否为空
+    if not fill_id:
+        print(f"ID为空，跳过此行")
+        return
     if not store_name:
         print(f"店铺名称为空，跳过此行")
         return
 
+    # 获取美食类别，用于文件名
+    food_category = str(row['美食类别']).strip() if pd.notna(row['美食类别']) else "未分类"
+
     # 创建安全的文件名
-    safe_filename = clean_filename(store_name)
-    md_filename = f"{safe_filename}.md"
+    safe_category = clean_filename(food_category)
+    safe_id = clean_filename(fill_id)
+    safe_store_name = clean_filename(store_name)
+    md_filename = f"{safe_category}_{safe_id}_{safe_store_name}.md"
 
     # 完整的文件路径
     filepath = os.path.join(output_dir, md_filename)
 
     # 获取其他字段
-    food_category = str(row['美食类别']).strip() if pd.notna(row['美食类别']) else "未分类"
     reason = str(row['推荐理由']).strip() if pd.notna(row['推荐理由']) else "暂无推荐理由"
-    address = str(row['美食地址（可选填具体店铺或区域）']).strip() if pd.notna(
-        row['美食地址（可选填具体店铺或区域）']) else "未填写地址"
-    campus = str(row['所在校区']).strip() if pd.notna(row['所在校区']) else "未指定校区"
+    address = str(row['美食地址']).strip() if pd.notna(row['美食地址']) else "未填写地址"
+
+    # 新增打分字段（放在最前面）
+    rating = str(row['请打分']).strip() if pd.notna(row['请打分']) else None
+
+    # 新增店铺链接字段（选填）
+    store_link = str(row['店铺链接（选填）']).strip() if pd.notna(row['店铺链接（选填）']) and str(
+        row['店铺链接（选填）']).strip() != "" else None
 
     # 可选字段，如果为空则跳过
     price = str(row['人均消费（元）（选填）']).strip() if pd.notna(row['人均消费（元）（选填）']) and str(
@@ -44,34 +59,48 @@ def generate_markdown_file(row, output_dir):
         row['您的联系方式（选填）']).strip() != "" else None
 
     # 构建Markdown内容
-    md_content = f"""# {store_name}
+    md_content = f""" **{store_name}**
 
-### 基本信息
-- **美食类别**: {food_category}
-- **所在校区**: {campus}
 """
+
+    # 添加打分（如果有值，放在最前面）
+    if rating:
+        try:
+            # 将数字转换为对应数量的星号
+            rating_num = int(float(rating))  # 处理可能是小数的情况
+            stars = "⭐" * rating_num
+            md_content += f"- **⭐推荐程度** {stars}\n\n"
+        except (ValueError, TypeError):
+            # 如果转换失败，保持原样
+            md_content += f"- **⭐推荐程度** {rating}星\n\n"
 
     # 添加人均消费（如果有值）
     if price:
-        md_content += f"- **人均消费**: {price}元\n"
+        md_content += f"- **💰人均消费**: {price}元\n\n"
+
+    # 添加店铺链接（如果有值）
+    if store_link:
+        md_content += f"- **🔗店铺链接**: {store_link}\n\n"
+
+    # 添加地址
+    md_content += f"""    
+- **🗺️店铺地址**: {address}    
+
+
+
+#### 🥣评价：
+{reason}
+
+图片：
+
+"""
 
     # 添加推荐人（如果有值）
     if nickname:
-        md_content += f"- **推荐人**: {nickname}\n"
+        md_content += f"- 👤推荐人：{nickname}\n"
 
-    # 添加联系方式（如果有值）
-    if contact:
-        md_content += f"- **联系方式**: {contact}\n"
-
-    md_content += f"""
-### 店铺地址
-{address}
-
-### 推荐理由
-{reason}
-
-### 提交信息
-- 提交时间: {row['提交时间']}
+    md_content += f"""    
+- 🕙提交时间: {row['提交时间']}
 
 ---
 {{
@@ -114,8 +143,10 @@ def main():
 
         # 遍历每一行数据
         for index, row in df.iterrows():
+            fill_id = row['填写ID'] if pd.notna(row['填写ID']) else '无ID'
             store_name = row['店铺名称'] if pd.notna(row['店铺名称']) else '无名店铺'
-            print(f"处理第{index + 1}条记录: {store_name}")
+            food_category = row['美食类别'] if pd.notna(row['美食类别']) else '未分类'
+            print(f"处理第{index + 1}条记录: 类别={food_category}, ID={fill_id}, 店铺={store_name}")
             generate_markdown_file(row, output_dir)
 
         print(f"\n所有文件已生成完成！文件保存在: {output_dir} 目录")
