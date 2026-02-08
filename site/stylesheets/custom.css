@@ -780,16 +780,36 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
+  
+  /* 移动端基础字体调整 */
+  .md-typeset {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
   .mdx-hero {
-    padding: 2.5rem 1rem;
+    padding: 2rem 1rem;
+    margin: -1rem -1rem 2rem;
+    border-radius: 0;
   }
 
   .mdx-hero h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
   }
 
   .mdx-hero p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mdx-hero__buttons {
+    gap: 0.75rem;
+  }
+
+  .mdx-hero__buttons .md-button {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.5rem;
   }
 
   .md-tabs__link {
@@ -797,12 +817,108 @@
     font-size: 0.875rem;
   }
 
+  .md-typeset h1 {
+    font-size: 1.8em;
+  }
+
   .md-typeset h2 {
     font-size: 1.4em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .md-typeset h3 {
+    font-size: 1.2em;
+    margin-top: 1.25rem;
+  }
+
+  .md-typeset p {
+    margin-bottom: 1rem;
   }
 
   .mdx-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .mdx-card {
+    padding: 1.25rem;
+  }
+
+  .mdx-card__header {
+    margin-bottom: 0.75rem;
+  }
+
+  .mdx-card__title {
+    font-size: 1rem;
+  }
+
+  .mdx-card__content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+/* 小屏幕手机适配（小于400px） */
+@media (max-width: 400px) {
+  .md-typeset {
+    font-size: 0.85rem;
+  }
+
+  .mdx-hero {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .mdx-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .mdx-hero p {
+    font-size: 0.9rem;
+  }
+
+  .mdx-hero__buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mdx-hero__buttons .md-button {
+    width: 100%;
+    max-width: 280px;
+    font-size: 0.85rem;
+    padding: 0.625rem 1.25rem;
+  }
+
+  .md-typeset h1 {
+    font-size: 1.6em;
+  }
+
+  .md-typeset h2 {
+    font-size: 1.3em;
+  }
+
+  .md-typeset h3 {
+    font-size: 1.1em;
+  }
+
+  .mdx-grid {
+    gap: 0.75rem;
+  }
+
+  .mdx-card {
+    padding: 1rem;
+  }
+
+  .mdx-card__icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .mdx-card__title {
+    font-size: 0.95rem;
   }
 }
 
@@ -849,4 +965,97 @@
 ::selection {
   background-color: rgba(0, 180, 216, 0.3);
   color: inherit;
+}
+
+/* ---------- 移动端触摸优化 ---------- */
+@media (max-width: 768px) {
+  /* 提高触摸目标的最小尺寸 */
+  .md-button,
+  .md-nav__link,
+  .md-tabs__link,
+  .mdx-card {
+    min-height: 44px; /* iOS 推荐的最小触摸目标尺寸 */
+  }
+
+  /* 按钮触摸优化 */
+  .md-button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
+  }
+
+  /* 链接触摸优化 */
+  .md-typeset a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
+  }
+
+  /* 卡片触摸反馈 */
+  .mdx-card {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+    touch-action: manipulation;
+  }
+
+  /* 改善移动端滚动体验 */
+  .md-content {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 移动端表格优化 */
+  .md-typeset table {
+    font-size: 0.8rem;
+  }
+
+  .md-typeset table th,
+  .md-typeset table td {
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* 移动端代码块优化 */
+  .md-typeset pre {
+    font-size: 0.8rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 移动端搜索框优化 */
+  .md-search__form {
+    min-height: 44px;
+  }
+
+  .md-search__input {
+    font-size: 1rem; /* 防止iOS缩放 */
+  }
+}
+
+/* 超小屏幕额外优化 */
+@media (max-width: 360px) {
+  .md-typeset {
+    font-size: 0.8rem;
+  }
+
+  .mdx-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .mdx-hero p {
+    font-size: 0.85rem;
+  }
+
+  .md-typeset h1 {
+    font-size: 1.5em;
+  }
+
+  .md-typeset h2 {
+    font-size: 1.2em;
+  }
+
+  .mdx-card {
+    padding: 0.75rem;
+  }
+
+  .mdx-card__icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
 }
