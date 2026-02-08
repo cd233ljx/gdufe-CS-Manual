@@ -21,23 +21,16 @@
     💡 本站仍在建设中，内容会持续更新，欢迎 Star、提 Issue 或直接 PR。
   </p>
 </div>
-
+`最近一次更新：2026.2.8`
 ## 📌 这是什么？ 
-> 最新更新：`2026.2.7`
 
-你好！这里是 **广东财经大学学生共建的实用生活 + 学习指南**。  
-你可能是：
-
-- 刚收到录取通知书的萌新
-- 在课程/选修/规划中纠结的学弟学妹
-- 想探索校园周边吃喝玩乐的同学
-- 愿意分享经验、吐槽选课/老师的学长学姐
-
+你好！这里是 **广东财经大学学生共建的实用生活 + 学习指南**  
+**涵盖课程资源、校园生活、美食地图等多个方面**。  
 > **怎么用？**
 >
 > - 左侧栏按「课程 / 校园生活」分类导航
-> - 顶部 Tabs 可在主要模块间快速切换
-> - 手机端点击右上角菜单图标展开导航
+> - 点击蓝色标题可直接在首页跳转到对应内容
+> - 已支持标题中文模糊搜索
 
 ---
 
@@ -54,19 +47,6 @@
       按教务系统课程和培养方案整理的课程索引，包含部分经验贴与资料指路，先从这里了解你四年会学什么。
       <p>
         <a href="courses/c_index/">➡ 查看总课程索引</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="mdx-card">
-    <div class="mdx-card__header">
-      <div class="mdx-card__icon">🧰</div>
-      <div class="mdx-card__title">学习工具箱 · 提效向</div>
-    </div>
-    <div class="mdx-card__content">
-      常用网站、开发工具、效率插件、常见坑合集，适合在写作业 / 做项目 / 摸鱼前先看一眼。
-      <p>
-        <a href="tools/tools/">➡ 打开学习工具箱</a>
       </p>
     </div>
   </div>
@@ -93,6 +73,19 @@
       学分怎么算？转专业/双学位？考试周怎么活？把大家问得最多的问题放在一起。
       <p>
         <a href="FaQ/faq/">➡ 先看看常见疑问</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="mdx-card">
+    <div class="mdx-card__header">
+      <div class="mdx-card__icon">🧰</div>
+      <div class="mdx-card__title">学习工具箱 · 提效向</div>
+    </div>
+    <div class="mdx-card__content">
+      常用网站、开发工具、效率插件、常见坑合集，适合在写作业 / 做项目 / 摸鱼前先看一眼。
+      <p>
+        <a href="tools/tools/">➡ 打开学习工具箱</a>
       </p>
     </div>
   </div>
@@ -147,9 +140,8 @@
 > **共建声明**：所有内容由学生自发整理，不代表学校官方观点，请理性参考。
 
 ## <span id="acknowledgments">💌 致谢</span>
-inspiration from [Xeraphinite/gdufe-cs-manual](https://github.com/Xeraphinite/gdufe-cs-manual)  
+Inspiration from [Xeraphinite/gdufe-cs-manual](https://github.com/Xeraphinite/gdufe-cs-manual)  
 
 ✨ 项目贡献者墙：  
 > 
   Ostar_37  
-  laolao

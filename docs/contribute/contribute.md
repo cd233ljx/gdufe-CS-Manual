@@ -68,5 +68,5 @@
 所有贡献者将出现在：  
 ✨ [项目首页贡献者墙](../index.md#acknowledgments)  
 
->最后更新：`2026.2.7`|项目维护：[@cd233ljx](https://github.com/cd233ljx)  
+>项目维护：[@cd233ljx](https://github.com/cd233ljx)  
 共建咨询：<utopiacd@student.gdufe.edu.cn>
