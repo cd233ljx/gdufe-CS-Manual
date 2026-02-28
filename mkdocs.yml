@@ -97,7 +97,7 @@ plugins:
       separator: '[\s\u200b\-]'
   - minify:
       minify_html: true
-  - tags
+  # - tags
 
 markdown_extensions:
   # Python Markdown
