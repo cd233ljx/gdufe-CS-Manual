@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>审核管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logout {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logout:hover {
+            background-color: #d32f2f;
+        }
+        .submission {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .submission h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .submission-info {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .submission-description {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .submission-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .approve {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .approve:hover {
+            background-color: #45a049;
+        }
+        .reject {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .reject:hover {
+            background-color: #d32f2f;
+        }
+        .flash {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .no-submissions {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+        .back:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>审核管理</h1>
+            <a href="{{ url_for('index') }}" class="logout">退出登录</a>
+        </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% if submissions %}
+            {% for submission in submissions %}
+                <div class="submission">
+                    <h3>{{ submission.title }}</h3>
+                    <div class="submission-info">
+                        <strong>分类：</strong>{{ submission.category }} | 
+                        <strong>提交时间：</strong>{{ submission.submit_time }}
+                        {% if submission.submitter %}
+                            | <strong>提交人：</strong>{{ submission.submitter }}
+                        {% endif %}
+                    </div>
+                    <div class="submission-description">
+                        {{ submission.description }}
+                    </div>
+                    <div class="submission-actions">
+                        <form method="POST" action="{{ url_for('approve', submission_id=submission.id) }}">
+                            <button type="submit" class="approve">通过</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('reject', submission_id=submission.id) }}">
+                            <button type="submit" class="reject">拒绝</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-submissions">
+                <p>暂无待审核的投稿</p>
+            </div>
+        {% endif %}
+        <a href="{{ url_for('index') }}" class="back">返回首页</a>
+    </div>
+</body>
+</html>
