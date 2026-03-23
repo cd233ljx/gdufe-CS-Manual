@@ -83,57 +83,47 @@
             map.addControl(new AMap.Scale());
             map.addControl(new AMap.ToolBar());
 
-            // 标记点数据
-            var shops = [
-                {
-                    name: '校内美食',
-                    position: [113.353897, 23.090329],
-                    description: '广州校区校内食堂及小吃',
-                    link: 'in/123'
-                },
-                {
-                    name: '校外美食',
-                    position: [113.365362, 23.151053],
-                    description: '广州校区周边热门店铺',
-                    link: 'out/gz_out.html'
-                }
-            ];
-
             // 创建一个共享的信息窗体实例
             var infoWindow = new AMap.InfoWindow({
                 offset: new AMap.Pixel(0, -30)
             });
 
-            // 遍历数据创建标记
-            shops.forEach(function (shop) {
-                // 创建 Marker 实例
-                var marker = new AMap.Marker({
-                    position: shop.position,
-                    map: map,
-                    // 使用 label 属性显示文字标签，不覆盖默认图标
-                    label: {
-                        content: `<div style="color:#1a73e8; font-weight:bold;">${shop.name}</div>`,
-                        direction: 'bottom' // 标签位置：底部
-                    },
-                    title: shop.name // 鼠标悬停时显示的文字
-                });
+            // 从外部 JSON 文件加载标记点数据
+            fetch('shops.json')
+                .then(response => response.json())
+                .then(shops => {
+                    // 遍历数据创建标记
+                    shops.forEach(function (shop) {
+                        // 创建 Marker 实例
+                        var marker = new AMap.Marker({
+                            position: shop.position,
+                            map: map,
+                            // 使用 label 属性显示文字标签，不覆盖默认图标
+                            label: {
+                                content: `<div style="color:#1a73e8; font-weight:bold;">${shop.name}</div>`,
+                                direction: 'bottom' // 标签位置：底部
+                            },
+                            title: shop.name // 鼠标悬停时显示的文字
+                        });
 
-                // 设置标记的点击事件
-                marker.on('click', function () {
-                    var content = `
-                        <div class="info-card">
-                            <h3>${shop.name}</h3>
-                            <p>${shop.description}</p>
-                            <a href="${shop.link}" target="_blank" class="btn-detail">查看详情</a>
-                        </div>
-                    `;
-                    infoWindow.setContent(content);
-                    infoWindow.open(map, marker.getPosition());
-                });
-            });
+                        // 设置标记的点击事件
+                        marker.on('click', function () {
+                            var content = `
+                                <div class="info-card">
+                                    <h3>${shop.name}</h3>
+                                    <p>${shop.description}</p>
+                                    <a href="${shop.link}" target="_blank" class="btn-detail">查看详情</a>
+                                </div>
+                            `;
+                            infoWindow.setContent(content);
+                            infoWindow.open(map, marker.getPosition());
+                        });
+                    });
 
-            // 自动调整地图视野，使所有标记点都在可见范围内
-            map.setFitView();
+                    // 自动调整地图视野，使所有标记点都在可见范围内
+                    map.setFitView();
+                })
+                .catch(error => console.error('加载数据失败:', error));
         }
     </script>
 </body>

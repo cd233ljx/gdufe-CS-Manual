@@ -1,0 +1,14 @@
+[
+    {
+        "name": "校内美食",
+        "position": [113.353897, 23.090329],
+        "description": "广州校区校内食堂及小吃",
+        "link": "in/123"
+    },
+    {
+        "name": "校外美食",
+        "position": [113.365362, 23.151053],
+        "description": "广州校区周边热门店铺",
+        "link": "out/gz_out.html"
+    }
+]

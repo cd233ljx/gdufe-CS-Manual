@@ -4,106 +4,310 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>美食投稿</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --gdufe-primary: #1a73e8;
+            --gdufe-primary-light: #4d9ff8;
+            --gdufe-primary-dark: #1557b0;
+            --gdufe-accent: #1a73e8;
+            --gdufe-success: #2ecc71;
+            --gdufe-warning: #f39c12;
+            --gdufe-danger: #e74c3c;
+            --gdufe-bg: #f5f5f5;
+            --gdufe-surface: #ffffff;
+            --gdufe-border: #e0e0e0;
+            --gdufe-text: #202124;
+            --gdufe-text-secondary: #5f6368;
+            --gdufe-text-muted: #9aa0a6;
+            --gdufe-gradient-primary: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+            --gdufe-gradient-accent: linear-gradient(135deg, #1a73e8 0%, #34a853 100%);
+            --shadow-xs: 0 1px 2px rgba(60, 64, 67, 0.15);
+            --shadow-sm: 0 1px 3px rgba(60, 64, 67, 0.15), 0 1px 2px rgba(60, 64, 67, 0.3);
+            --shadow-md: 0 2px 6px rgba(60, 64, 67, 0.3);
+            --shadow-lg: 0 4px 12px rgba(60, 64, 67, 0.35);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.25s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Noto Sans SC', Arial, sans-serif;
+            background-color: var(--gdufe-bg);
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
         }
+
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: var(--gdufe-surface);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
             max-width: 600px;
+            width: 100%;
             margin: 0 auto;
+            animation: fadeInUp 0.5s ease-out;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon-wrapper {
+            width: 64px;
+            height: 64px;
+            background: var(--gdufe-gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .icon-wrapper svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
         h1 {
             text-align: center;
-            color: #333;
+            color: var(--gdufe-text);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
         }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 1.5rem;
         }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #666;
+            margin-bottom: 0.5rem;
+            color: var(--gdufe-text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
         }
+
         input[type="text"],
         textarea,
         select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gdufe-border);
+            border-radius: var(--radius-md);
+            background-color: var(--gdufe-surface);
+            color: var(--gdufe-text);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition-fast);
+            outline: none;
         }
+
         textarea {
-            height: 150px;
             resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
         }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--gdufe-primary);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        input[type="text"]::placeholder,
+        textarea::placeholder {
+            color: var(--gdufe-text-muted);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 20px;
+            padding-right: 3rem;
+        }
+
         input[type="file"] {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 1rem;
+            border: 2px dashed var(--gdufe-border);
+            border-radius: var(--radius-md);
+            background-color: var(--gdufe-bg);
+            color: var(--gdufe-text-secondary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
         }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
+
+        input[type="file"]:hover {
+            border-color: var(--gdufe-primary);
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        input[type="file"]::file-selector-button {
+            background: var(--gdufe-primary);
             color: white;
             border: none;
-            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
             cursor: pointer;
+            font-weight: 500;
+            margin-right: 1rem;
+            transition: var(--transition-fast);
         }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--gdufe-primary-dark);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background: var(--gdufe-gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
         button:hover {
-            background-color: #45a049;
+            background: linear-gradient(135deg, #4d9ff8 0%, #1a73e8 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
+
+        button:active {
+            transform: translateY(0);
+        }
+
         .flash {
-            background-color: #d4edda;
+            background-color: rgba(46, 204, 113, 0.1);
             color: #155724;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--gdufe-success);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
         }
+
+        .flash svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: var(--gdufe-success);
+        }
+
         .back {
-            display: block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
             text-align: center;
-            margin-top: 15px;
-            color: #666;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gdufe-border);
+            color: var(--gdufe-text-secondary);
             text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-fast);
         }
+
         .back:hover {
-            color: #333;
+            color: var(--gdufe-primary);
+        }
+
+        .back svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"></path>
+            </svg>
+        </div>
         <h1>美食投稿</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    <div class="flash">{{ message }}</div>
+                    <div class="flash">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
         <form method="POST" action="{{ url_for('submit') }}" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">店铺名称</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title" placeholder="请输入店铺名称" required>
             </div>
             <div class="form-group">
                 <label for="description">推荐理由</label>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description" placeholder="分享你的美食体验..." required></textarea>
             </div>
             <div class="form-group">
                 <label for="category">美食类别</label>
                 <select id="category" name="category" required>
+                    <option value="">请选择美食类别</option>
                     <option value="地方菜系（粤菜、东北菜、湘菜等）">地方菜系</option>
                     <option value="异域料理（日料、韩料、东南亚料理）">异域料理</option>
                     <option value="快餐小吃">快餐小吃</option>
@@ -116,15 +320,27 @@
             </div>
             <div class="form-group">
                 <label for="submitter">您的昵称（选填）</label>
-                <input type="text" id="submitter" name="submitter">
+                <input type="text" id="submitter" name="submitter" placeholder="留下你的昵称">
             </div>
             <div class="form-group">
                 <label for="contact">您的联系方式（选填）</label>
-                <input type="text" id="contact" name="contact">
+                <input type="text" id="contact" name="contact" placeholder="方便后续联系">
             </div>
-            <button type="submit">提交投稿</button>
+            <button type="submit">
+                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                提交投稿
+            </button>
         </form>
-        <a href="{{ url_for('index') }}" class="back">返回首页</a>
+        <a href="{{ url_for('index') }}" class="back">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            返回首页
+        </a>
     </div>
 </body>
 </html>
