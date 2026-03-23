@@ -428,6 +428,18 @@
                             </svg>
                             <strong>提交时间：</strong>{{ submission.submit_time }}
                         </span>
+                        <span class="info-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <strong>校区：</strong>{{ submission.campus == 'sanshui' and '三水' or '广州' }}
+                        </span>
+                        <span class="info-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <strong>推荐星数：</strong>{{ '⭐' * submission.stars }}
+                        </span>
                         {% if submission.submitter %}
                             <span class="info-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -443,6 +455,16 @@
                     </div>
                     <div class="submission-actions">
                         <form method="POST" action="{{ url_for('approve', submission_id=submission.id) }}">
+                            <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 150px;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--gdufe-text-secondary);">经度</label>
+                                    <input type="text" name="longitude" placeholder="如: 112.8913" style="width: 100%; padding: 0.5rem; border: 2px solid var(--gdufe-border); border-radius: var(--radius-md);">
+                                </div>
+                                <div style="flex: 1; min-width: 150px;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--gdufe-text-secondary);">纬度</label>
+                                    <input type="text" name="latitude" placeholder="如: 23.1736" style="width: 100%; padding: 0.5rem; border: 2px solid var(--gdufe-border); border-radius: var(--radius-md);">
+                                </div>
+                            </div>
                             <button type="submit" class="approve">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="20 6 9 17 4 12"></polyline>
