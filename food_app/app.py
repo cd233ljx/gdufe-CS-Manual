@@ -106,6 +106,9 @@ def init_db():
             category TEXT NOT NULL,
             campus TEXT NOT NULL,
             stars INTEGER DEFAULT 4,
+            price TEXT,
+            shop_link TEXT,
+            shop_address TEXT,
             image_path TEXT,
             status TEXT DEFAULT 'pending',
             submit_time DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -124,6 +127,18 @@ def init_db():
         # 添加stars字段（如果不存在）
         if 'stars' not in columns:
             db.execute("ALTER TABLE food_submissions ADD COLUMN stars INTEGER DEFAULT 4")
+        
+        # 添加price字段（如果不存在）
+        if 'price' not in columns:
+            db.execute("ALTER TABLE food_submissions ADD COLUMN price TEXT")
+        
+        # 添加shop_link字段（如果不存在）
+        if 'shop_link' not in columns:
+            db.execute("ALTER TABLE food_submissions ADD COLUMN shop_link TEXT")
+        
+        # 添加shop_address字段（如果不存在）
+        if 'shop_address' not in columns:
+            db.execute("ALTER TABLE food_submissions ADD COLUMN shop_address TEXT")
         
         # 检查是否存在管理员用户
         cursor = db.execute('SELECT * FROM users WHERE username = ?', ('admin',))
@@ -159,15 +174,18 @@ def generate_markdown(submission, campus):
     stars = "⭐" * submission['stars']
     md_content += f"- **⭐推荐程度** {stars}\n\n"
     
-    # 添加人均消费（未填写）
-    md_content += f"- **💰人均消费**: 未填写\n\n"
+    # 添加人均消费
+    price_text = submission['price'] if submission['price'] else '未填写'
+    md_content += f"- **💰人均消费**: {price_text}\n\n"
     
-    # 添加店铺链接（未填写）
-    md_content += f"- **🔗店铺链接**: 未填写\n\n"
+    # 添加店铺链接
+    shop_link_text = submission['shop_link'] if submission['shop_link'] else '未填写'
+    md_content += f"- **🔗店铺链接**: {shop_link_text}\n\n"
     
-    # 添加店铺地址（未填写）
+    # 添加店铺地址
+    shop_address_text = submission['shop_address'] if submission['shop_address'] else '未填写'
     md_content += f"""
-- **🗺️店铺地址**: 未填写
+- **🗺️店铺地址**: {shop_address_text}
 
 
 
@@ -185,15 +203,12 @@ def generate_markdown(submission, campus):
     # 添加提交时间
     md_content += f"""
 - 🕙提交时间: {submission['submit_time']}
-
----
-{{
-    name: '{submission['title']}',
-    position: [],
-    description: '{submission['description']}',
-    link: 'out/{submission['category']}/{submission['title']}'
-}}
 """
+    
+    # 添加图片（如果有）
+    if submission['image_path']:
+        image_url = f"../../../uploads/{submission['image_path']}"
+        md_content += f"\n![{submission['title']}]({image_url})\n"
     
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write(md_content)
@@ -266,6 +281,9 @@ def submit():
         category = request.form['category']
         campus = request.form['campus']
         stars = int(request.form['stars'])
+        price = request.form.get('price', '')
+        shop_link = request.form.get('shop_link', '')
+        shop_address = request.form.get('shop_address', '')
         submitter = request.form['submitter']
         contact = request.form['contact']
         
@@ -284,9 +302,9 @@ def submit():
         
         with db:
             db.execute('''
-            INSERT INTO food_submissions (title, description, category, campus, stars, image_path, submitter, contact)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (title, description, category, campus, stars, image_path, submitter, contact))
+            INSERT INTO food_submissions (title, description, category, campus, stars, price, shop_link, shop_address, image_path, submitter, contact)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (title, description, category, campus, stars, price, shop_link, shop_address, image_path, submitter, contact))
         
         flash('投稿成功，等待审核')
         return redirect(url_for('submit'))
