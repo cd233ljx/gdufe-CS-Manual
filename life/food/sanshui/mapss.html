@@ -91,68 +91,46 @@
             map.addControl(new AMap.Scale());
             map.addControl(new AMap.ToolBar());
 
-            // 标注数据
-            var shops = [
-                {
-                    name: '荣创木桶饭',
-                    position: [112.848349, 23.205605],
-                    description: '站主指定餐厅',
-                    link: 'out/地方菜系（粤菜、东北菜、湘菜等）/荣创木桶饭'
-                },
-                {
-                    name: '胜记艇仔粥',
-                    position: [112.891298, 23.166644],
-                    description: '艇仔粥9元一碗买不了吃亏买不了上当',
-                    link: 'out/地方菜系（粤菜、东北菜、湘菜等）/胜记艇仔粥'
-                },
-                {
-                    name: '拾意炖汤',
-                    position: [112.8913, 23.173644],
-                    description: '站主指定餐厅2',
-                    link: 'out/地方菜系（粤菜、东北菜、湘菜等）/拾意炖汤'
-                }, 
-                {
-                    name: '匠信拉面',
-                    position: [112.90, 23.17],
-                    description: '康乐路匠信拉面 日式拉面',
-                    link: 'out/异域料理（日料、韩料、东南亚料理）/匠信拉面'
-                },
-            ];
-
             // 创建共享的单一信息窗体实例，提高性能
             var infoWindow = new AMap.InfoWindow({
                 offset: new AMap.Pixel(0, -30)
             });
 
-            // 循环添加标记
-            shops.forEach(function (shop) {
-                var marker = new AMap.Marker({
-                    position: shop.position,
-                    map: map,
-                    // 添加文本标签，方便用户直接在地图上看到校内/校外的区分
-                    label: {
-                        content: `<div style="color:#1a73e8; font-weight:bold; padding:2px 5px; background:white; border:1px solid #1a73e8; border-radius:3px;">${shop.name}</div>`,
-                        direction: 'bottom'
-                    },
-                    title: shop.name
-                });
+            // 从外部 JSON 文件加载标注数据
+            fetch('shops.json')
+                .then(response => response.json())
+                .then(shops => {
+                    // 循环添加标记
+                    shops.forEach(function (shop) {
+                        var marker = new AMap.Marker({
+                            position: shop.position,
+                            map: map,
+                            // 添加文本标签，方便用户直接在地图上看到校内/校外的区分
+                            label: {
+                                content: `<div style="color:#1a73e8; font-weight:bold; padding:2px 5px; background:white; border:1px solid #1a73e8; border-radius:3px;">${shop.name}</div>`,
+                                direction: 'bottom'
+                            },
+                            title: shop.name
+                        });
 
-                // 绑定点击事件
-                marker.on('click', function () {
-                    var content = `
-                        <div class="info-card">
-                            <h3>${shop.name}</h3>
-                            <p>${shop.description}</p>
-                            ${shop.link ? `<a href="${shop.link}" target="_blank" class="btn-detail">查看详情</a>` : '<span style="color:#999; font-size:12px;">详情整理中...</span>'}
-                        </div>
-                    `;
-                    infoWindow.setContent(content);
-                    infoWindow.open(map, marker.getPosition());
-                });
-            });
+                        // 绑定点击事件
+                        marker.on('click', function () {
+                            var content = `
+                                <div class="info-card">
+                                    <h3>${shop.name}</h3>
+                                    <p>${shop.description}</p>
+                                    ${shop.link ? `<a href="${shop.link}" target="_blank" class="btn-detail">查看详情</a>` : '<span style="color:#999; font-size:12px;">详情整理中...</span>'}
+                                </div>
+                            `;
+                            infoWindow.setContent(content);
+                            infoWindow.open(map, marker.getPosition());
+                        });
+                    });
 
-            // 关键：自动调整地图视野，确保校内和校外的点都能同时显示在屏幕上
-            map.setFitView();
+                    // 关键：自动调整地图视野，确保校内和校外的点都能同时显示在屏幕上
+                    map.setFitView();
+                })
+                .catch(error => console.error('加载数据失败:', error));
         }
     </script>
 </body>
