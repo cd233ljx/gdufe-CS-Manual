@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 import os
 import subprocess
 import re
 import sqlite3
 import json
-from datetime import datetime
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
@@ -17,6 +17,11 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
 # 创建上传目录
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+
+# 自定义路由提供上传文件
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # 双向链表节点类
 class DoublyLinkedListNode:
@@ -207,7 +212,7 @@ def generate_markdown(submission, campus):
     
     # 添加图片（如果有）
     if submission['image_path']:
-        image_url = f"../../../uploads/{submission['image_path']}"
+        image_url = f"../../uploads/{submission['image_path']}"
         md_content += f"\n![{submission['title']}]({image_url})\n"
     
     with open(md_path, 'w', encoding='utf-8') as f:
@@ -296,8 +301,16 @@ def submit():
             file = request.files['image']
             if file and file.filename:
                 filename = clean_filename(file.filename)
+                # 保存到 food_app/uploads
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(filepath)
+                # 同时保存到 docs/life/food/uploads
+                docs_uploads_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs', 'life', 'food', 'uploads')
+                if not os.path.exists(docs_uploads_dir):
+                    os.makedirs(docs_uploads_dir)
+                docs_filepath = os.path.join(docs_uploads_dir, filename)
+                file.seek(0)  # 重置文件指针
+                file.save(docs_filepath)
                 image_path = filename
         
         with db:

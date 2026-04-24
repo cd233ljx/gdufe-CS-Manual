@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+food_review.db
+
+# Uploads
+uploads/

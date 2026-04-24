@@ -7,6 +7,7 @@ copyright: Copyright &copy; 2026 GDUFE CS Manual Contributors
 
 theme:
   name: material
+  custom_dir: overrides
   language: zh
   logo: assets/logo.png
   favicon: assets/favicon.png
@@ -35,7 +36,7 @@ theme:
         name: 切换到浅色模式
 
   font:
-    text: "Noto Sans SC"
+    text: "LXGW WenKai"
     code: "JetBrains Mono"
 
   features:
@@ -69,9 +70,11 @@ theme:
 extra_css:
   - stylesheets/custom.css
   - stylesheets/extra.css
+  - stylesheets/ai-assistant.css
 
 extra_javascript:
   - javascripts/extra.js
+  - javascripts/ai-assistant.js
 
 nav:
   - 首页: index.md
@@ -148,6 +151,23 @@ markdown_extensions:
   - pymdownx.tilde
 
 extra:
+  # 侧栏 AI 助手：后端必须把文档站 Origin 加入 CORS（如仅允许 localhost:3000，mkdocs 默认 8000 会被拦截）
+  gdufe_ai:
+    enabled: true
+    # 例: http://localhost:5001/api/external/chat
+    api_url: "http://localhost:5001/api/external/chat" 
+    # 与后端 EXTERNAL_API_KEY 一致
+    api_key: "gdufe-c1f35085e0114cf692dab1f369fae364"
+    title: "AI 助手"
+    placeholder: "输入问题…"
+    # external_chat：流式 POST { message, stream: true }；非流式仅 { message }；JSON 响应 { success, answer }
+    request_mode: "external_chat"
+    stream: true
+    model: "" # 仅 openai_messages 时使用
+    include_page_context: true
+    include_history_in_message: true # external_chat 下多轮拼入一条 message
+    system_prompt: ""
+
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/cd233ljx/gdufe-CS-Manual

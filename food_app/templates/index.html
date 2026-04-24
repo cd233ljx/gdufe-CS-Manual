@@ -4,192 +4,297 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>美食投稿系统</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Noto+Serif+SC:wght@700;900&family=Syne:wght@700;800&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --gdufe-primary: #1a73e8;
-            --gdufe-primary-light: #4d9ff8;
-            --gdufe-primary-dark: #1557b0;
-            --gdufe-accent: #1a73e8;
-            --gdufe-success: #2ecc71;
-            --gdufe-warning: #f39c12;
-            --gdufe-danger: #e74c3c;
-            --gdufe-bg: #f5f5f5;
-            --gdufe-surface: #ffffff;
-            --gdufe-border: #e0e0e0;
-            --gdufe-text: #202124;
-            --gdufe-text-secondary: #5f6368;
-            --gdufe-text-muted: #9aa0a6;
-            --gdufe-gradient-primary: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
-            --gdufe-gradient-accent: linear-gradient(135deg, #1a73e8 0%, #34a853 100%);
-            --shadow-xs: 0 1px 2px rgba(60, 64, 67, 0.15);
-            --shadow-sm: 0 1px 3px rgba(60, 64, 67, 0.15), 0 1px 2px rgba(60, 64, 67, 0.3);
-            --shadow-md: 0 2px 6px rgba(60, 64, 67, 0.3);
-            --shadow-lg: 0 4px 12px rgba(60, 64, 67, 0.35);
-            --radius-sm: 6px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --radius-xl: 16px;
-            --transition-fast: 0.15s ease;
-            --transition-base: 0.25s ease;
+            --bg-color: #F8F5F1;
+            --border-color: #0F0E0E;
+            --accent-red: #E03131;
+            --accent-yellow: #FCC419;
+            --text-main: #0F0E0E;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Noto Sans SC', Arial, sans-serif;
-            background-color: var(--gdufe-bg);
-            margin: 0;
-            padding: 20px;
+            font-family: 'Chivo', 'Noto Serif SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             min-height: 100vh;
+            padding: 28px 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        body::before, body::after { display: none !important; }
+
+        .marquee {
+            width: 100vw;
+            background: var(--accent-red);
+            color: #fff;
+            padding: 6px 0;
+            border-top: 1.5px solid var(--border-color);
+            border-bottom: 1.5px solid var(--border-color);
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
         }
 
         .container {
-            background-color: var(--gdufe-surface);
-            padding: 3rem 2.5rem;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-md);
-            max-width: 600px;
+            background-color: #fff;
+            border: 1.5px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            padding: 1.75rem;
+            border-radius: 4px;
+            max-width: 640px;
             width: 100%;
-            margin: 0 auto;
-            text-align: center;
-            animation: fadeInUp 0.5s ease-out;
+            margin: 28px auto 0;
+            position: relative;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        h1, h2, h3, .title {
+            font-family: 'Syne', 'ZCOOL XiaoWei', serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-shadow: 1px 1px 0px var(--accent-yellow);
+            margin-bottom: 1rem;
+            border-bottom: 1.5px solid var(--border-color);
+            padding-bottom: 6px;
+            display: inline-block;
         }
-
-        h1 {
-            color: var(--gdufe-text);
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            color: var(--gdufe-text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
-        }
+        h1 { font-size: 1.4rem; }
+        h2 { font-size: 1.15rem; }
+        h3 { font-size: 1rem; }
 
         .icon-wrapper {
-            width: 80px;
-            height: 80px;
-            background: var(--gdufe-gradient-primary);
-            border-radius: var(--radius-lg);
+            width: 52px;
+            height: 52px;
+            background: var(--accent-red);
+            border: 1.5px solid var(--border-color);
+            box-shadow: 3px 3px 0px var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
-            box-shadow: var(--shadow-sm);
+            margin: 0 auto 1.25rem;
+            transform: rotate(-3deg);
+            transition: transform 0.2s;
+        }
+        .container:hover .icon-wrapper { transform: rotate(3deg) scale(1.05); }
+        .icon-wrapper svg { width: 26px; height: 26px; color: #fff; }
+
+        .form-group { margin-bottom: 1rem; text-align: left; }
+        label {
+            display: block;
+            font-weight: 800;
+            font-size: 0.75rem;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea, select {
+            width: 100%;
+            border: 1.5px solid var(--border-color);
+            padding: 0.55rem 0.7rem;
+            font-family: 'Chivo', sans-serif;
+            font-weight: bold;
+            font-size: 0.85rem;
+            box-shadow: 3px 3px 0px var(--border-color);
+            border-radius: 0;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 4px 4px 0px var(--border-color);
+            transform: translate(-1px, -1px);
+            background: #fffafa;
         }
 
-        .icon-wrapper svg {
-            width: 40px;
-            height: 40px;
-            color: white;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
+        button, .btn, .logout, .approve, .reject, .back {
+            background-color: var(--accent-yellow);
+            color: var(--text-main);
+            border: 1.5px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-family: 'Chivo', sans-serif;
+            font-weight: 800;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px var(--border-color);
+            transition: all 0.2s;
+            border-radius: 0;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.875rem 1.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
+            justify-content: center;
             text-decoration: none;
-            border-radius: var(--radius-md);
-            border: none;
-            cursor: pointer;
-            transition: var(--transition-base);
-            box-shadow: var(--shadow-sm);
+            margin-top: 6px;
+            margin-right: 6px;
+        }
+        button:hover, .btn:hover, .logout:hover, .approve:hover, .back:hover {
+            background-color: var(--accent-red);
+            color: #fff;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--border-color);
+        }
+        button:active, .btn:active, .logout:active, .approve:active, .back:active {
+            transform: translate(0, 0);
+            box-shadow: 0px 0px 0px var(--border-color);
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+        .btn-secondary { background-color: #fff; }
+        .reject { background-color: var(--accent-red); color: white; }
+        .reject:hover { background-color: var(--text-main); }
+        .approve { background-color: #69db7c; }
+
+        .flash {
+            background: var(--accent-yellow);
+            border: 1.5px solid var(--border-color);
+            padding: 0.6rem 0.8rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 3px 3px 0px var(--border-color);
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn:active {
-            transform: translateY(0);
+        .submission {
+            background: #fff;
+            border: 1.5px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 4px 4px 0px var(--border-color);
+            text-align: left;
+            position: relative;
+            transform: rotate(-0.5deg);
+        }
+        .submission:nth-child(even) { transform: rotate(0.5deg); }
+
+        .category-tag {
+            background: var(--accent-yellow);
+            border: 1.5px solid var(--border-color);
+            padding: 0.2rem 0.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-top: 6px;
+            margin-bottom: 6px;
         }
 
-        .btn-primary {
-            background: var(--gdufe-gradient-primary);
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #4d9ff8 0%, #1a73e8 100%);
+        .comments-section {
+            background-color: var(--bg-color);
+            border: 1.5px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            padding: 1.5rem;
+            max-width: 640px;
+            width: 100%;
+            margin: 28px auto;
+            text-align: center;
+        }
+        .comments-section h2 {
+            border-bottom: none;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 1.25rem;
         }
 
-        .btn-secondary {
-            background: var(--gdufe-surface);
-            color: var(--gdufe-primary);
-            border: 2px solid var(--gdufe-primary);
+        .carousel {
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            border-radius: 0;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            width: 100%;
         }
+        .carousel-indicators {
+            bottom: 8px;
+            background: var(--border-color);
+            border: 1.5px solid var(--border-color);
+            border-radius: 0;
+        }
+        .carousel-indicator {
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            border: 1px solid #fff;
+        }
+        .carousel-inner {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .carousel-item { min-width: 100%; height: 100%; position: relative; }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; border: none; display: block; }
+        .carousel-indicator.active { background-color: var(--accent-red); transform: scale(1.1); }
 
-        .btn-secondary:hover {
-            background-color: var(--gdufe-primary);
-            color: white;
-        }
+        input[type="file"] { padding: 8px; font-size: 0.85rem; }
 
-        .btn svg {
-            width: 20px;
-            height: 20px;
-        }
+        .btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .btn svg, button svg { width: 16px; height: 16px; margin-right: 4px; }
+        .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 0.5rem; }
 
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-
-            .container {
-                padding: 2rem 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .subtitle {
-                font-size: 1rem;
-            }
-
-            .btn-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
+            body { padding: 16px 8px; font-size: 13px; }
+            .container { padding: 1.25rem; margin: 8px auto; box-shadow: 3px 3px 0px var(--border-color) !important; }
+            .comments-section { padding: 1.25rem; margin: 16px auto; box-shadow: 3px 3px 0px var(--border-color) !important; }
+            h1 { font-size: 1.2rem !important; }
+            h2 { font-size: 1.05rem !important; }
+            h3 { font-size: 0.95rem !important; }
+            .btn-group { gap: 8px; }
+            .btn, button, .logout, .approve, .reject, .back { padding: 0.45rem 0.8rem !important; font-size: 0.75rem !important; margin: 0 !important; }
+            .carousel { height: 200px !important; box-shadow: 3px 3px 0px var(--border-color) !important; margin: 1rem 0; }
+            .icon-wrapper { width: 40px !important; height: 40px !important; margin: 0 auto 0.75rem; transform: none !important; }
+            .icon-wrapper svg { width: 20px !important; height: 20px !important; }
+            .marquee { font-size: 0.7rem; padding: 4px 0; }
+            .header-content, .header { flex-direction: column; text-align: center; justify-content: center; width: 100%; }
+            .submission { padding: 0.75rem !important; box-shadow: 3px 3px 0px var(--border-color) !important; transform: none !important; margin-bottom: 16px; }
+            .submission form { display: flex; flex-direction: column; gap: 6px; }
+            .submission form button { width: 100%; }
+            .form-group { margin-bottom: 0.75rem; }
+            input, textarea, select { padding: 8px 10px !important; box-shadow: 2px 2px 0px var(--border-color) !important; font-size: 14px; }
         }
     </style>
 </head>
 <body>
+    <div class="marquee"><span>广财美食投稿系统 — 发现地道美味 — 分享探店随笔 — 优质美食独家推荐 — 广财美食投稿系统 — 发现地道美味 — 分享探店随笔 — 优质美食独家推荐</span></div>
     <div class="container">
         <div class="icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -200,8 +305,36 @@
                 <line x1="14" y1="1" x2="14" y2="4"></line>
             </svg>
         </div>
-        <h1>美食投稿审核系统</h1>
-        <p class="subtitle">欢迎使用美食投稿审核系统，分享你发现的美味！</p>
+        <h1>美食分享平台</h1>
+        <p class="subtitle">发现美食，分享快乐，记录生活中的每一道美味！</p>
+
+        <!-- 轮播图 -->
+        <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item">
+                    <img src="/uploads/微信图片_20260327210906_197_332.jpg" alt="美食图片1">
+                </div>
+                <div class="carousel-item">
+                    <img src="/uploads/微信图片_20260327210908_199_332.jpg" alt="美食图片3">
+                </div>
+                <div class="carousel-item">
+                    <img src="/uploads/微信图片_20260327210909_200_332.jpg" alt="美食图片4">
+                </div>
+                <div class="carousel-item">
+                    <img src="/uploads/微信图片_20260327210910_201_332.jpg" alt="美食图片5">
+                </div>
+                <div class="carousel-item">
+                    <img src="/uploads/微信图片_20260327210911_202_332.jpg" alt="美食图片6">
+                </div>
+            </div>
+            <div class="carousel-indicators">
+                <div class="carousel-indicator active"></div>
+                <div class="carousel-indicator"></div>
+                <div class="carousel-indicator"></div>
+                <div class="carousel-indicator"></div>
+            </div>
+        </div>
+
         <div class="btn-group">
             <a href="{{ url_for('submit') }}" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -219,8 +352,8 @@
         </div>
     </div>
 
-    <div class="comments-section" style="width: 100%; max-width: 600px; margin: 2rem auto; padding: 0 1rem;">
-        <h2 style="text-align: center; color: var(--gdufe-text); margin-bottom: 1.5rem;">评论区</h2>
+    <div class="comments-section">
+        <h2>美食交流区</h2>
         <div style="width: 100%;">
             <script src="https://giscus.app/client.js"
                     data-repo="cd233ljx/gdufe-CS-Manual"
@@ -239,5 +372,35 @@
             </script>
         </div>
     </div>
+
+    <script>
+        const carousel = document.querySelector('.carousel');
+        const carouselInner = document.querySelector('.carousel-inner');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        let currentIndex = 0;
+        const itemCount = carouselItems.length;
+
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % itemCount;
+            updateCarousel();
+        }
+
+        setInterval(nextSlide, 5000);
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+    </script>
 </body>
 </html>

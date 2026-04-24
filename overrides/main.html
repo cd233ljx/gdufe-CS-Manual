@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% set _gdufe_ai = config.extra.gdufe_ai | default({}) %}
+{% block extrahead %}
+  {{ super() }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
+  <script>
+    window.__GDUFE_AI__ = {{ {
+      "enabled": _gdufe_ai.enabled | default(true),
+      "apiUrl": _gdufe_ai.api_url | default(""),
+      "apiKey": _gdufe_ai.api_key | default(""),
+      "title": _gdufe_ai.title | default("AI 助手"),
+      "placeholder": _gdufe_ai.placeholder | default("输入问题…"),
+      "requestMode": _gdufe_ai.request_mode | default("external_chat"),
+      "model": _gdufe_ai.model | default(""),
+      "stream": _gdufe_ai.stream | default(true),
+      "includePageContext": _gdufe_ai.include_page_context | default(true),
+      "includeHistoryInMessage": _gdufe_ai.include_history_in_message | default(true),
+      "systemPrompt": _gdufe_ai.system_prompt | default("")
+    } | tojson }};
+  </script>
+{% endblock %}
