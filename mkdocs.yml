@@ -156,7 +156,6 @@ extra:
     enabled: true
     # 例: http://localhost:5001/api/external/chat
     api_url: "http://localhost:5001/api/external/chat" 
-    # 与后端 EXTERNAL_API_KEY 一致
     api_key: "gdufe-c1f35085e0114cf692dab1f369fae364"
     title: "AI 助手"
     placeholder: "输入问题…"
