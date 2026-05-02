@@ -21,7 +21,7 @@
   </div>
 
   <p style="margin-top: 1.5rem; opacity: .5; font-size: 0.82rem;">
-    最近更新 · 2026.2.28 &nbsp;|&nbsp; 仍在建设中，欢迎 Star / Issue / PR
+    最近更新 · 2026.5.1 &nbsp;|&nbsp; 仍在建设中，欢迎 Star / Issue / PR
   </p>
 </div>
 
