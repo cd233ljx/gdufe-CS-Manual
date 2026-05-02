@@ -470,7 +470,9 @@
     /* ── welcome screen ── */
 
     var suggestions = [
-      "佛山校区有哪些园区？",
+      "计算机专业的培养方案是怎样的？",
+      "请问如何申请课程免修？",
+      "我想知道操作系统课程的考试形式。",
     ];
 
     function buildWelcome() {
