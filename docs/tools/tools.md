@@ -1,5 +1,8 @@
 # 工具分享
 
+## [AI智能助理主页](http://localhost:3000/)
+![主页截图](../assets/rag-chat-demo.png)
+
 
 
 

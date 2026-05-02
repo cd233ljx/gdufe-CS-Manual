@@ -12,6 +12,9 @@
     <a class="md-button" href="#campus-life">
       校园生活
     </a>
+    <a class="md-button" href="campus/">
+      校园知识库
+    </a>
     <a class="md-button md-button--secondary" href="#contribute">
       参与共建
     </a>
@@ -73,6 +76,19 @@
       学分怎么算？转专业 / 双学位？考试周怎么活？把大家问得最多的问题放在一起。
       <p>
         <a href="FaQ/faq/">看看常见疑问 →</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="mdx-card">
+    <div class="mdx-card__header">
+      <div class="mdx-card__icon">🗂️</div>
+      <div class="mdx-card__title">校园知识库</div>
+    </div>
+    <div class="mdx-card__content">
+      选课考试、学籍制度、办事流程、毕业要求和生活服务的主题化索引。
+      <p>
+        <a href="campus/">进入知识库 →</a>
       </p>
     </div>
   </div>

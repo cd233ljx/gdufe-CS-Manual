@@ -90,6 +90,61 @@ nav:
       - 通勤指南: life/transport/transport.md
       - 舞萌/中二 地图: life/sbga/sbga.md
       - 宿舍生活: life/dormitory/dormitory.md
+  - 校园知识库:
+      - 知识库总览: campus/index.md
+      - 学业规则:
+          - 分类总览: campus/academic-rules/index.md
+          - 成绩与考试管理办法: campus/academic-rules/grades-exams.md
+          - 缓考管理规定: campus/academic-rules/deferred-exams.md
+          - 补考: campus/academic-rules/makeup-exams.md
+          - 重修管理规定: campus/academic-rules/retake-courses.md
+          - 考试违纪与缺考管理规定: campus/academic-rules/exam-discipline-absence.md
+          - 学业预警实施办法: campus/academic-rules/academic-warning.md
+      - 选课规则:
+          - 分类总览: campus/course-selection/index.md
+          - 广东财经大学选课流程说明: campus/course-selection/selection-process.md
+          - 广东财经大学选课退补改规则: campus/course-selection/add-drop-change.md
+          - 广东财经大学选课时间冲突、重复修读、修读限制说明: campus/course-selection/conflict-repeat-limits.md
+          - 广东财经大学通识分类要求说明: campus/course-selection/general-education-categories.md
+          - 体育选课说明: campus/course-selection/pe-selection.md
+          - 广东财经大学体育选课常见 FAQ 及重要通知: campus/course-selection/pe-selection-faq.md
+      - 校园办事指南:
+          - 分类总览: campus/services/index.md
+          - 广东财经大学常见教务窗口办事指南: campus/services/academic-affairs-window.md
+          - 广东财经大学在读证明、学籍证明办理指南: campus/services/enrollment-status-certificate.md
+          - 广东财经大学成绩单打印或申请指南: campus/services/transcript.md
+          - 广东财经大学学生证补办指南: campus/services/student-id-reissue.md
+          - 广东财经大学校园卡补办指南: campus/services/campus-card-reissue.md
+          - 请假与缓考申请流程指南: campus/services/leave-deferred-exam-application.md
+      - 学籍与常见制度:
+          - 分类总览: campus/student-status/index.md
+          - 休学复学转专业转学分基本规则: campus/student-status/status-change-transfer-credit.md
+          - 请假制度: campus/student-status/leave-policy.md
+          - 考勤相关说明: campus/student-status/attendance.md
+          - 处分与申诉基础规则: campus/student-status/discipline-appeal.md
+      - 毕业与培养方案规则:
+          - 分类总览: campus/graduation-program/index.md
+          - 本科培养方案总则: campus/graduation-program/undergraduate-program.md
+          - 演示账号所属专业年级的培养方案: campus/graduation-program/program-example.md
+          - 毕业学分毕业条件说明: campus/graduation-program/graduation-credits.md
+          - 学位授予相关基本规则: campus/graduation-program/degree-award.md
+          - 通识课要求: campus/graduation-program/general-education-requirements.md
+          - 体育课要求: campus/graduation-program/pe-requirements.md
+      - 教学日历与重要时间节点:
+          - 分类总览: campus/calendar/index.md
+          - 广东财经大学校历: campus/calendar/academic-calendar.md
+          - 选课时间通知: campus/calendar/course-selection-schedule.md
+          - 期末考试周安排: campus/calendar/final-exam-week.md
+          - 补考安排通知: campus/calendar/makeup-exam-schedule.md
+          - 放假调课通知: campus/calendar/holiday-class-adjustment.md
+      - 校园生活服务:
+          - 分类总览: campus/student-life-services/index.md
+          - 宿舍报修: campus/student-life-services/dorm-repair.md
+          - 水电缴费: campus/student-life-services/utilities-payment.md
+          - 图书馆借阅预约: campus/student-life-services/library-borrow-reserve.md
+          - 奖助学金基础说明: campus/student-life-services/scholarship-aid.md
+          - 就业中心实习手续: campus/student-life-services/internship-procedures.md
+          - 校医院心理中心: campus/student-life-services/clinic-counseling.md
   - 工具箱: tools/tools.md
   - FAQ: FaQ/faq.md
   - 贡献指南: contribute/contribute.md
