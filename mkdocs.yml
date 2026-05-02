@@ -242,7 +242,3 @@ extra:
   #     - accept
   #     - manage
 
-extra_head:
-  - |
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 后续自定义CSS会放在这里，先加视口标签 -->
