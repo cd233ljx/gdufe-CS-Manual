@@ -367,6 +367,27 @@
   margin-bottom: 0;
 }
 
+.gdufe-ai__bubble h1,
+.gdufe-ai__bubble h2,
+.gdufe-ai__bubble h3 {
+  margin: 0.2rem 0 0.45rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--gdufe-text);
+}
+
+.gdufe-ai__bubble h1 {
+  font-size: 1rem;
+}
+
+.gdufe-ai__bubble h2 {
+  font-size: 0.95rem;
+}
+
+.gdufe-ai__bubble h3 {
+  font-size: 0.9rem;
+}
+
 .gdufe-ai__bubble strong {
   font-weight: 700;
 }
@@ -393,6 +414,20 @@
 
 .gdufe-ai__bubble li {
   margin-bottom: 0.2rem;
+}
+
+.gdufe-ai__bubble blockquote {
+  margin: 0.45rem 0;
+  padding: 0.1rem 0 0.1rem 0.7rem;
+  border-left: 3px solid var(--gdufe-border);
+  color: var(--gdufe-text-secondary);
+}
+
+.gdufe-ai__bubble hr {
+  height: 1px;
+  margin: 0.65rem 0;
+  border: 0;
+  background: var(--gdufe-border);
 }
 
 /* inline code */

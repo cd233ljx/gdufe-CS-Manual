@@ -39,71 +39,165 @@
       .replace(/"/g, "&quot;");
   }
 
-  function renderMarkdown(text) {
-    if (!text) return "";
+  function safeHref(href) {
+    var h = (href || "").trim();
+    if (/^(https?:|mailto:|#|\/)/i.test(h)) return h;
+    return "#";
+  }
+
+  function renderInline(text) {
+    var codeSpans = [];
     var html = escapeHtml(text);
 
-    // fenced code blocks
-    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, function (_, lang, code) {
-      return (
-        '<div class="gdufe-ai__code-wrap">' +
-        '<div class="gdufe-ai__code-header">' +
-        '<span class="gdufe-ai__code-lang">' +
-        (lang || "code") +
-        "</span>" +
-        '<button class="gdufe-ai__copy-btn" type="button" title="复制代码">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>' +
-        "<span>复制</span>" +
-        "</button>" +
-        "</div>" +
-        '<pre class="gdufe-ai__pre"><code>' +
-        code.trimEnd() +
-        "</code></pre>" +
-        "</div>"
-      );
+    html = html.replace(/`([^`\n]+)`/g, function (_, code) {
+      var i = codeSpans.length;
+      codeSpans.push('<code class="gdufe-ai__inline-code">' + code + "</code>");
+      return "\u0000INLINE_CODE_" + i + "\u0000";
     });
 
-    // inline code
-    html = html.replace(/`([^`\n]+)`/g, '<code class="gdufe-ai__inline-code">$1</code>');
-
-    // bold
+    html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (_, label, href) {
+      return (
+        '<a href="' +
+        safeHref(href) +
+        '" target="_blank" rel="noopener noreferrer">' +
+        label +
+        "</a>"
+      );
+    });
     html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-    // italic
-    html = html.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>");
+    html = html.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
 
-    // links
-    html = html.replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    return html.replace(/\u0000INLINE_CODE_(\d+)\u0000/g, function (_, i) {
+      return codeSpans[Number(i)] || "";
+    });
+  }
+
+  function codeBlockHtml(lang, code) {
+    return (
+      '<div class="gdufe-ai__code-wrap">' +
+      '<div class="gdufe-ai__code-header">' +
+      '<span class="gdufe-ai__code-lang">' +
+      escapeHtml((lang || "code").trim()) +
+      "</span>" +
+      '<button class="gdufe-ai__copy-btn" type="button" title="复制代码">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>' +
+      "<span>复制</span>" +
+      "</button>" +
+      "</div>" +
+      '<pre class="gdufe-ai__pre"><code>' +
+      escapeHtml(code.trimEnd()) +
+      "</code></pre>" +
+      "</div>"
     );
+  }
 
-    // unordered list
-    html = html.replace(
-      /^(\s*)[-*] (.+)$/gm,
-      '$1<li>$2</li>'
-    );
-    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
+  function renderMarkdown(text) {
+    if (!text) return "";
+    var codeBlocks = [];
+    var source = String(text).replace(/\r\n?/g, "\n");
 
-    // ordered list
-    html = html.replace(
-      /^(\s*)\d+\. (.+)$/gm,
-      '$1<li>$2</li>'
-    );
+    source = source.replace(/```([^\n`]*)\n([\s\S]*?)```/g, function (_, lang, code) {
+      var i = codeBlocks.length;
+      codeBlocks.push(codeBlockHtml(lang, code));
+      return "\n@@GDUFE_CODE_BLOCK_" + i + "@@\n";
+    });
 
-    // paragraphs (double newline)
-    html = html.replace(/\n{2,}/g, "</p><p>");
-    // single newline → <br>
-    html = html.replace(/\n/g, "<br>");
+    var out = [];
+    var paragraph = [];
+    var listType = null;
 
-    html = "<p>" + html + "</p>";
-    html = html.replace(/<p><\/p>/g, "");
-    // clean up code blocks wrapped in <p>
-    html = html.replace(/<p>(<div class="gdufe-ai__code-wrap">)/g, "$1");
-    html = html.replace(/(<\/div>)<\/p>/g, "$1");
-    html = html.replace(/<p>(<ul>)/g, "$1");
-    html = html.replace(/(<\/ul>)<\/p>/g, "$1");
+    function flushParagraph() {
+      if (!paragraph.length) return;
+      out.push("<p>" + paragraph.map(renderInline).join("<br>") + "</p>");
+      paragraph = [];
+    }
 
-    return html;
+    function closeList() {
+      if (!listType) return;
+      out.push("</" + listType + ">");
+      listType = null;
+    }
+
+    source.split("\n").forEach(function (line) {
+      var trimmed = line.trim();
+      var match;
+
+      if (!trimmed) {
+        flushParagraph();
+        closeList();
+        return;
+      }
+
+      match = trimmed.match(/^@@GDUFE_CODE_BLOCK_(\d+)@@$/);
+      if (match) {
+        flushParagraph();
+        closeList();
+        out.push(codeBlocks[Number(match[1])] || "");
+        return;
+      }
+
+      match = trimmed.match(/^(#{1,3})\s+(.+)$/);
+      if (match) {
+        flushParagraph();
+        closeList();
+        out.push(
+          "<h" +
+            match[1].length +
+            ">" +
+            renderInline(match[2]) +
+            "</h" +
+            match[1].length +
+            ">"
+        );
+        return;
+      }
+
+      if (/^[-*_]{3,}$/.test(trimmed)) {
+        flushParagraph();
+        closeList();
+        out.push("<hr>");
+        return;
+      }
+
+      match = trimmed.match(/^>\s?(.+)$/);
+      if (match) {
+        flushParagraph();
+        closeList();
+        out.push("<blockquote>" + renderInline(match[1]) + "</blockquote>");
+        return;
+      }
+
+      match = trimmed.match(/^[-*]\s+(.+)$/);
+      if (match) {
+        flushParagraph();
+        if (listType !== "ul") {
+          closeList();
+          out.push("<ul>");
+          listType = "ul";
+        }
+        out.push("<li>" + renderInline(match[1]) + "</li>");
+        return;
+      }
+
+      match = trimmed.match(/^\d+\.\s+(.+)$/);
+      if (match) {
+        flushParagraph();
+        if (listType !== "ol") {
+          closeList();
+          out.push("<ol>");
+          listType = "ol";
+        }
+        out.push("<li>" + renderInline(match[1]) + "</li>");
+        return;
+      }
+
+      closeList();
+      paragraph.push(line);
+    });
+
+    flushParagraph();
+    closeList();
+    return out.join("");
   }
 
   /* ── page context ────────────────────────────── */
