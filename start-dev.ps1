@@ -2,10 +2,35 @@ $ErrorActionPreference = 'Stop'
 
 $rootDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $foodAppDir = Join-Path $rootDir 'food_app'
-$pythonExe = Join-Path $rootDir 'venv\Scripts\python.exe'
+$venvPythonExe = Join-Path $rootDir 'venv\Scripts\python.exe'
+$pythonExe = $venvPythonExe
 
-if (-not (Test-Path $pythonExe)) {
-    Write-Error "Virtual environment Python not found: $pythonExe"
+function Test-PythonEnvironment {
+    param([string]$PythonPath)
+
+    try {
+        & $PythonPath -c "import flask, mkdocs" 2>$null
+        return $LASTEXITCODE -eq 0
+    }
+    catch {
+        return $false
+    }
+}
+
+if (-not (Test-Path $venvPythonExe)) {
+    Write-Error "Virtual environment Python not found: $venvPythonExe"
+}
+
+if (-not (Test-PythonEnvironment $venvPythonExe)) {
+    $fallbackPython = (Get-Command python -ErrorAction SilentlyContinue)
+
+    if ($fallbackPython -and (Test-PythonEnvironment $fallbackPython.Source)) {
+        $pythonExe = $fallbackPython.Source
+        Write-Warning "venv Python is not usable, falling back to system Python: $pythonExe"
+    }
+    else {
+        Write-Error "venv Python exists but cannot import Flask/MkDocs. Rebuild the venv or fix venv\pyvenv.cfg: $venvPythonExe"
+    }
 }
 
 if (-not (Test-Path $foodAppDir)) {

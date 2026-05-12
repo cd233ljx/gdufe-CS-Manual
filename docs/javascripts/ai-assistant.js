@@ -91,6 +91,85 @@
     );
   }
 
+  function splitTableRow(line) {
+    var cells = [];
+    var cell = "";
+    var escaped = false;
+    var text = line.trim();
+
+    if (text.charAt(0) === "|") text = text.slice(1);
+    if (text.charAt(text.length - 1) === "|") text = text.slice(0, -1);
+
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      if (escaped) {
+        cell += ch;
+        escaped = false;
+      } else if (ch === "\\") {
+        escaped = true;
+      } else if (ch === "|") {
+        cells.push(cell.trim());
+        cell = "";
+      } else {
+        cell += ch;
+      }
+    }
+    if (escaped) cell += "\\";
+    cells.push(cell.trim());
+    return cells;
+  }
+
+  function isTableDelimiter(line) {
+    var cells = splitTableRow(line);
+    if (cells.length < 2) return false;
+    return cells.every(function (cell) {
+      return /^:?-{3,}:?$/.test(cell.trim());
+    });
+  }
+
+  function tableAlign(cell) {
+    var text = cell.trim();
+    if (/^:-+:$/.test(text)) return "center";
+    if (/^-+:$/.test(text)) return "right";
+    if (/^:-+$/.test(text)) return "left";
+    return "";
+  }
+
+  function renderTableRow(cells, tag, aligns) {
+    return (
+      "<tr>" +
+      cells
+        .map(function (cell, i) {
+          var align = aligns && aligns[i] ? ' style="text-align:' + aligns[i] + '"' : "";
+          return "<" + tag + align + ">" + renderInline(cell) + "</" + tag + ">";
+        })
+        .join("") +
+      "</tr>"
+    );
+  }
+
+  function renderTable(lines) {
+    var header = splitTableRow(lines[0]);
+    var delimiter = splitTableRow(lines[1]);
+    var aligns = delimiter.map(tableAlign);
+    var bodyRows = lines.slice(2).map(splitTableRow);
+
+    return (
+      '<div class="gdufe-ai__table-wrap"><table class="gdufe-ai__table">' +
+      "<thead>" +
+      renderTableRow(header, "th", aligns) +
+      "</thead>" +
+      "<tbody>" +
+      bodyRows
+        .map(function (row) {
+          return renderTableRow(row, "td", aligns);
+        })
+        .join("") +
+      "</tbody>" +
+      "</table></div>"
+    );
+  }
+
   function renderMarkdown(text) {
     if (!text) return "";
     var codeBlocks = [];
@@ -118,14 +197,16 @@
       listType = null;
     }
 
-    source.split("\n").forEach(function (line) {
+    var lines = source.split("\n");
+    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+      var line = lines[lineIndex];
       var trimmed = line.trim();
       var match;
 
       if (!trimmed) {
         flushParagraph();
         closeList();
-        return;
+        continue;
       }
 
       match = trimmed.match(/^@@GDUFE_CODE_BLOCK_(\d+)@@$/);
@@ -133,7 +214,30 @@
         flushParagraph();
         closeList();
         out.push(codeBlocks[Number(match[1])] || "");
-        return;
+        continue;
+      }
+
+      if (
+        trimmed.indexOf("|") !== -1 &&
+        lineIndex + 1 < lines.length &&
+        isTableDelimiter(lines[lineIndex + 1])
+      ) {
+        var tableLines = [line, lines[lineIndex + 1]];
+        lineIndex += 2;
+        while (
+          lineIndex < lines.length &&
+          lines[lineIndex].trim() &&
+          lines[lineIndex].indexOf("|") !== -1 &&
+          !/^@@GDUFE_CODE_BLOCK_(\d+)@@$/.test(lines[lineIndex].trim())
+        ) {
+          tableLines.push(lines[lineIndex]);
+          lineIndex++;
+        }
+        lineIndex--;
+        flushParagraph();
+        closeList();
+        out.push(renderTable(tableLines));
+        continue;
       }
 
       match = trimmed.match(/^(#{1,3})\s+(.+)$/);
@@ -149,14 +253,14 @@
             match[1].length +
             ">"
         );
-        return;
+        continue;
       }
 
       if (/^[-*_]{3,}$/.test(trimmed)) {
         flushParagraph();
         closeList();
         out.push("<hr>");
-        return;
+        continue;
       }
 
       match = trimmed.match(/^>\s?(.+)$/);
@@ -164,7 +268,7 @@
         flushParagraph();
         closeList();
         out.push("<blockquote>" + renderInline(match[1]) + "</blockquote>");
-        return;
+        continue;
       }
 
       match = trimmed.match(/^[-*]\s+(.+)$/);
@@ -176,7 +280,7 @@
           listType = "ul";
         }
         out.push("<li>" + renderInline(match[1]) + "</li>");
-        return;
+        continue;
       }
 
       match = trimmed.match(/^\d+\.\s+(.+)$/);
@@ -188,16 +292,167 @@
           listType = "ol";
         }
         out.push("<li>" + renderInline(match[1]) + "</li>");
-        return;
+        continue;
       }
 
       closeList();
       paragraph.push(line);
-    });
+    }
 
     flushParagraph();
     closeList();
     return out.join("");
+  }
+
+  /* ── thinking / reasoning block ──────────────── */
+
+  var THINK_OPEN = '<think>';
+  var THINK_CLOSE = '</think>';
+
+  function parseThinking(content) {
+    if (!content) return { cleanContent: '', thinkContent: '', hasOpenThink: false };
+    var openIdx = content.indexOf(THINK_OPEN);
+    if (openIdx !== -1) {
+      var closeIdx = content.indexOf(THINK_CLOSE, openIdx + THINK_OPEN.length);
+      if (closeIdx === -1) {
+        return {
+          cleanContent: content.slice(0, openIdx).trim(),
+          thinkContent: content.slice(openIdx + THINK_OPEN.length).trim(),
+          hasOpenThink: true,
+        };
+      }
+    }
+
+    var parts = [];
+    var thinkContent = '';
+    var lastIndex = 0;
+
+    var THINK_RE = /<think>([\s\S]*?)<\/think>/gi;
+    var match;
+    while ((match = THINK_RE.exec(content)) !== null) {
+      parts.push(content.slice(lastIndex, match.index));
+      thinkContent += match[1].trim() + '\n\n';
+      lastIndex = THINK_RE.lastIndex;
+    }
+    parts.push(content.slice(lastIndex));
+
+    return {
+      cleanContent: parts.join('').trim(),
+      thinkContent: thinkContent.trim(),
+      hasOpenThink: false,
+    };
+  }
+
+  function createThinkingBlock(content, streaming, bubble) {
+    var wasStreaming = bubble._thinkStreaming;
+    var expanded = true;
+    if (wasStreaming && !streaming) {
+      expanded = false;
+    } else if (!streaming && bubble._thinkExpanded !== undefined) {
+      expanded = bubble._thinkExpanded;
+    }
+    bubble._thinkStreaming = streaming;
+
+    var block = el('div', {
+      className: 'gdufe-ai__thinking-block' + (expanded ? ' gdufe-ai__thinking--expanded' : ''),
+    });
+
+    var header = el('button', {
+      type: 'button',
+      className: 'gdufe-ai__thinking-header',
+    });
+
+    var headerText = expanded ? '收起思考过程' : '已深度思考';
+    var title = el('span', {
+      className: 'gdufe-ai__thinking-title',
+      textContent: headerText,
+    });
+
+    var arrow = el('span', { className: 'gdufe-ai__thinking-arrow' });
+    arrow.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
+
+    header.appendChild(title);
+    header.appendChild(arrow);
+
+    var bodyWrapper = el('div', { className: 'gdufe-ai__thinking-body-wrapper' });
+    var body = el('div', { className: 'gdufe-ai__thinking-body' });
+    body.textContent = content || '';
+    bodyWrapper.appendChild(body);
+
+    header.addEventListener('click', function () {
+      expanded = !expanded;
+      block.classList.toggle('gdufe-ai__thinking--expanded', expanded);
+      title.textContent = expanded ? '收起思考过程' : '已深度思考';
+      arrow.style.transform = expanded ? 'rotate(180deg)' : '';
+      bubble._thinkExpanded = expanded;
+    });
+
+    block.appendChild(header);
+    block.appendChild(bodyWrapper);
+    return block;
+  }
+
+  function updateThinkingBlock(block, content, streaming, bubble) {
+    var wasStreaming = bubble._thinkStreaming;
+    var expanded = block.classList.contains('gdufe-ai__thinking--expanded');
+    if (wasStreaming && !streaming) {
+      expanded = false;
+      block.classList.remove('gdufe-ai__thinking--expanded');
+    }
+    bubble._thinkStreaming = streaming;
+
+    var title = block.querySelector('.gdufe-ai__thinking-title');
+    var arrow = block.querySelector('.gdufe-ai__thinking-arrow');
+    var body = block.querySelector('.gdufe-ai__thinking-body');
+
+    if (title) title.textContent = expanded ? '收起思考过程' : '已深度思考';
+    if (arrow) arrow.style.transform = expanded ? 'rotate(180deg)' : '';
+    if (body) body.textContent = content || '';
+  }
+
+  function renderAssistantContent(bubble, text, isStreaming) {
+    var parsed = parseThinking(text);
+    var displayContent = parsed.cleanContent;
+    var thinkContent = parsed.thinkContent;
+    var isActive = parsed.hasOpenThink || !!isStreaming;
+
+    var existingThink = bubble.querySelector('.gdufe-ai__thinking-block');
+    var existingAnswer = bubble.querySelector('.gdufe-ai__answer-wrap');
+
+    if (!existingThink && !existingAnswer) {
+      bubble.innerHTML = '';
+      if (thinkContent || isActive) {
+        var thinkBlock = createThinkingBlock(thinkContent, isActive, bubble);
+        bubble.appendChild(thinkBlock);
+      }
+      if (displayContent) {
+        var answerWrap = el('div', { className: 'gdufe-ai__answer-wrap' });
+        answerWrap.innerHTML = renderMarkdown(displayContent);
+        bubble.appendChild(answerWrap);
+      }
+    } else {
+      if (thinkContent || isActive) {
+        if (existingThink) {
+          updateThinkingBlock(existingThink, thinkContent, isActive, bubble);
+        } else {
+          var thinkBlock = createThinkingBlock(thinkContent, isActive, bubble);
+          bubble.insertBefore(thinkBlock, bubble.firstChild);
+        }
+      } else if (existingThink) {
+        existingThink.remove();
+      }
+      if (displayContent) {
+        if (existingAnswer) {
+          existingAnswer.innerHTML = renderMarkdown(displayContent);
+        } else {
+          var answerWrap = el('div', { className: 'gdufe-ai__answer-wrap' });
+          answerWrap.innerHTML = renderMarkdown(displayContent);
+          bubble.appendChild(answerWrap);
+        }
+      } else if (existingAnswer) {
+        existingAnswer.remove();
+      }
+    }
   }
 
   /* ── page context ────────────────────────────── */
@@ -220,6 +475,13 @@
       if (typeof data.message === "string" && data.message) return data.message;
       return "请求未成功";
     }
+    if (typeof data.reasoning_content === "string" && data.reasoning_content) {
+      var ans = "";
+      if (typeof data.answer === "string") ans = data.answer;
+      else if (typeof data.content === "string") ans = data.content;
+      else if (data.message && typeof data.message === "string") ans = data.message;
+      return "<think>\n" + data.reasoning_content + "\n</think>\n\n" + ans;
+    }
     if (typeof data.answer === "string") return data.answer;
     if (data.choices && data.choices[0] && data.choices[0].message)
       return data.choices[0].message.content || "";
@@ -238,16 +500,30 @@
     if (obj == null) return "";
     if (typeof obj === "string") return obj;
     if (typeof obj !== "object") return String(obj);
-    if (typeof obj.answer === "string") return obj.answer;
-    if (typeof obj.content === "string") return obj.content;
-    if (obj.delta && typeof obj.delta.content === "string") return obj.delta.content;
-    if (obj.choices && obj.choices[0] && obj.choices[0].delta) {
+
+    var reasoning = "";
+    var content = "";
+
+    // reasoning fields (independent checks)
+    if (typeof obj.reasoning_content === "string") reasoning = obj.reasoning_content;
+    if (obj.delta && typeof obj.delta.reasoning_content === "string") reasoning = obj.delta.reasoning_content;
+
+    // content fields (first match wins)
+    if (typeof obj.answer === "string") content = obj.answer;
+    else if (typeof obj.content === "string") content = obj.content;
+    else if (obj.delta && typeof obj.delta.content === "string") content = obj.delta.content;
+    else if (obj.choices && obj.choices[0] && obj.choices[0].delta) {
       var d = obj.choices[0].delta;
-      if (typeof d.content === "string") return d.content;
+      if (typeof d.content === "string") content = d.content;
+      if (typeof d.reasoning_content === "string") reasoning = d.reasoning_content;
+    } else if (typeof obj.text === "string") content = obj.text;
+    else if (typeof obj.token === "string") content = obj.token;
+    else if (obj.message && typeof obj.message === "string") content = obj.message;
+
+    if (reasoning || content) {
+      if (reasoning) return { reasoning: reasoning, content: content };
+      return content;
     }
-    if (typeof obj.text === "string") return obj.text;
-    if (typeof obj.token === "string") return obj.token;
-    if (obj.message && typeof obj.message === "string") return obj.message;
     return "";
   }
 
@@ -386,7 +662,11 @@
       } catch (e) {
         delta = payload;
       }
-      if (delta) onDelta(delta);
+      if (typeof delta === "string" && delta) onDelta(delta);
+      else if (delta && typeof delta === "object") {
+        if (delta.reasoning) onDelta(delta.reasoning, true);
+        if (delta.content) onDelta(delta.content, false);
+      }
     }
 
     pump();
@@ -662,6 +942,7 @@
     /* ── message bubble copy (copy entire message) ── */
 
     function addMsgCopyButton(bubble) {
+      if (bubble.querySelector(".gdufe-ai__msg-copy")) return;
       var btn = el("button", {
         type: "button",
         className: "gdufe-ai__msg-copy",
@@ -712,7 +993,7 @@
         });
         var bubble = el("div", { className: "gdufe-ai__bubble" });
         if (m.role === "assistant") {
-          bubble.innerHTML = renderMarkdown(m.content || "");
+          renderAssistantContent(bubble, m.content || "");
           bubble._rawText = m.content || "";
           addMsgCopyButton(bubble);
         } else {
@@ -882,21 +1163,30 @@
               row.appendChild(bubble);
               listEl.appendChild(row);
               scrollListBottom();
-              var acc = "";
+              var accThinking = "";
+              var accAnswer = "";
               readSSEStream(
                 r,
-                function (d) {
-                  acc += d;
-                  bubble.innerHTML = renderMarkdown(acc);
-                  bubble._rawText = acc;
+                function (d, isReasoning) {
+                  if (isReasoning) accThinking += d;
+                  else accAnswer += d;
+                  var displayText = accThinking
+                    ? "<think>\n" + accThinking + "\n</think>\n\n" + accAnswer
+                    : accAnswer;
+                  renderAssistantContent(bubble, displayText, true);
+                  bubble._rawText = displayText;
                   scrollListBottom();
                 },
                 function () {
                   // add copy button after stream ends
+                  var finalText = accThinking
+                    ? "<think>\n" + accThinking + "\n</think>\n\n" + accAnswer
+                    : accAnswer;
+                  renderAssistantContent(bubble, finalText, false);
                   addMsgCopyButton(bubble);
                   messages.push({
                     role: "assistant",
-                    content: acc || "（空回复）",
+                    content: finalText || "（空回复）",
                   });
                   saveMessages(messages);
                   setGenerating(false);

@@ -209,9 +209,9 @@ extra:
   # 侧栏 AI 助手：后端必须把文档站 Origin 加入 CORS（如仅允许 localhost:3000，mkdocs 默认 8000 会被拦截）
   gdufe_ai:
     enabled: true
-    # 例: http://81.71.156.230/api/external/chat
-    api_url: "http://81.71.156.230/api/external/chat" 
-    api_key: "gdufe-4535a11a8a5b40eeb0b9863bfb9d0baa"
+    # 公网演示用的测试接口，实际部署时请替换为自己的后端地址和 API Key
+    api_url: "http://81.71.156.230:5001/api/external/chat"
+    api_key: "gdufe-cecedecda5844e9aa5baf944e9fe7d77"
     title: "AI 助手"
     placeholder: "输入问题…"
     # external_chat：流式 POST { message, stream: true }；非流式仅 { message }；JSON 响应 { success, answer }

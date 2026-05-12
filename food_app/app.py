@@ -5,6 +5,7 @@ import re
 import sqlite3
 import json
 import datetime
+import sys
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
@@ -212,7 +213,7 @@ def generate_markdown(submission, campus):
     
     # 添加图片（如果有）
     if submission['image_path']:
-        image_url = f"../../uploads/{submission['image_path']}"
+        image_url = f"../../../uploads/{submission['image_path']}"
         md_content += f"\n![{submission['title']}]({image_url})\n"
     
     with open(md_path, 'w', encoding='utf-8') as f:
@@ -270,7 +271,7 @@ def update_shops_json(campus, title, description, category, position):
 # 重建MkDocs
 def rebuild_mkdocs():
     mkdocs_dir = os.path.dirname(os.path.dirname(__file__))
-    subprocess.run(['python', '-m', 'mkdocs', 'build'], cwd=mkdocs_dir)
+    subprocess.run([sys.executable, '-m', 'mkdocs', 'build'], cwd=mkdocs_dir)
 
 # 首页
 @app.route('/')
